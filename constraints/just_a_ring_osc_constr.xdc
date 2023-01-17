@@ -7,17 +7,17 @@
 set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets *]
 
 ## place ring oscillator in bottom left
-set_property LOC SLICE_X143Y0 [get_cells b_inferred_i_1]
-set_property LOC SLICE_X144Y0 [get_cells b_inferred_i_2]
-set_property LOC SLICE_X145Y0 [get_cells b_inferred_i_3]
-set_property LOC SLICE_X146Y0 [get_cells b_inferred_i_4]
-set_property LOC SLICE_X147Y0 [get_cells b_inferred_i_5]
-set_property LOC SLICE_X148Y0 [get_cells b_inferred_i_6]
-set_property LOC SLICE_X149Y0 [get_cells b_inferred_i_7]
-set_property LOC SLICE_X150Y0 [get_cells b_inferred_i_8]
-set_property LOC SLICE_X151Y0 [get_cells b_inferred_i_9]
-set_property LOC SLICE_X152Y0 [get_cells b_inferred_i_10]
-set_property LOC SLICE_X153Y0 [get_cells b_inferred_i_11]
+set_property LOC SLICE_X0Y0 [get_cells b_inferred_i_1]
+set_property LOC SLICE_X1Y0 [get_cells b_inferred_i_2]
+set_property LOC SLICE_X2Y0 [get_cells b_inferred_i_3]
+set_property LOC SLICE_X3Y0 [get_cells b_inferred_i_4]
+set_property LOC SLICE_X4Y0 [get_cells b_inferred_i_5]
+set_property LOC SLICE_X5Y1 [get_cells b_inferred_i_6]
+set_property LOC SLICE_X6Y0 [get_cells b_inferred_i_7]
+set_property LOC SLICE_X7Y0 [get_cells b_inferred_i_8]
+set_property LOC SLICE_X8Y0 [get_cells b_inferred_i_9]
+set_property LOC SLICE_X9Y0 [get_cells b_inferred_i_10]
+set_property LOC SLICE_X10Y0 [get_cells b_inferred_i_11]
 
 ## Clock Signal
 #set_property -dict { PACKAGE_PIN AD11  IOSTANDARD LVDS     } [get_ports { sysclk_n }]; #IO_L12N_T1_MRCC_33 Sch=sysclk_n
