@@ -7,20 +7,20 @@
 set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets osc0/*]
 
 ## place xor gate
-set_property LOC SLICE_X0Y1 [get_cells q_OBUF_inst_i_1]
+set_property LOC SLICE_X1Y0 [get_cells q_OBUF_inst_i_1]
 
 ## place the ring oscillator surrounding the XOR gate 
 set_property LOC SLICE_X0Y0 [get_cells osc0/b_inferred_i_1]
-set_property LOC SLICE_X0Y0 [get_cells osc0/b_inferred_i_2]
-set_property LOC SLICE_X0Y0 [get_cells osc0/b_inferred_i_3]
-set_property LOC SLICE_X0Y0 [get_cells osc0/b_inferred_i_4]
-set_property LOC SLICE_X1Y0 [get_cells osc0/b_inferred_i_5]
-set_property LOC SLICE_X1Y1 [get_cells osc0/b_inferred_i_6]
-set_property LOC SLICE_X1Y2 [get_cells osc0/b_inferred_i_7]
-set_property LOC SLICE_X0Y2 [get_cells osc0/b_inferred_i_8]
-set_property LOC SLICE_X1Y2 [get_cells osc0/b_inferred_i_9]
-set_property LOC SLICE_X1Y1 [get_cells osc0/b_inferred_i_10]
-set_property LOC SLICE_X1Y0 [get_cells osc0/b_inferred_i_11]
+set_property LOC SLICE_X0Y1 [get_cells osc0/b_inferred_i_2]
+set_property LOC SLICE_X1Y1 [get_cells osc0/b_inferred_i_3]
+set_property LOC SLICE_X2Y1 [get_cells osc0/b_inferred_i_4]
+set_property LOC SLICE_X2Y0 [get_cells osc0/b_inferred_i_5]
+set_property LOC SLICE_X3Y0 [get_cells osc0/b_inferred_i_6]
+set_property LOC SLICE_X4Y0 [get_cells osc0/b_inferred_i_7]
+set_property LOC SLICE_X5Y1 [get_cells osc0/b_inferred_i_8]
+set_property LOC SLICE_X6Y0 [get_cells osc0/b_inferred_i_9]
+set_property LOC SLICE_X7Y0 [get_cells osc0/b_inferred_i_10]
+set_property LOC SLICE_X8Y0 [get_cells osc0/b_inferred_i_11]
 
 ## Clock Signal
 #set_property -dict { PACKAGE_PIN AD11  IOSTANDARD LVDS     } [get_ports { sysclk_n }]; #IO_L12N_T1_MRCC_33 Sch=sysclk_n
