@@ -1,0 +1,6 @@
+# ignore auto-generated things for uploading to an ESP32
+# why am i using an ESP32? that seems overkill right?
+# yes that's right - it's simply the only board I have on hand at the moment with 3.3V logic! Deal with it!
+**/debug_custom.json
+**/debug.cfg
+**/esp32.svd
