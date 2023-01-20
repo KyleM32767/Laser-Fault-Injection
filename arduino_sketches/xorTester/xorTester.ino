@@ -13,8 +13,14 @@
 // GPIO pin for XOR gate output
 #define OUTPUT_PIN 15
 
+// GPIO pin for ring oscillator enable
+#define OSC_EN 2
+
 // input pins to XOR gate (currently set up for an ESP32)
 const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26, 25};
+
+// true if ring oscillator is enabled, false otherwise
+bool oscEnabled = true;
 
 
 /*
@@ -59,17 +65,22 @@ void setup() {
 		pinMode(INPUT_PINS[i], OUTPUT);
 	}
 	pinMode(OUTPUT_PIN, INPUT);
+	pinMode(OSC_EN, OUTPUT);
+	digitalWrite(OSC_EN, HIGH);
 
 	Serial.println("Ready\n\n");
 }
 
 
 /*
- * Initiates test upon receiving a byte over serial
+ * Does a thing upon receiving a byte over serial
  */
 void serialEvent() {
 
-	if (Serial.read() == 'a') {
+	char rxByte = Serial.read();
+
+	// 'a' will initiate gate test
+	if (rxByte == 'a') {
 
 		// expected result from XOR gate
 		bool expected;
@@ -94,6 +105,13 @@ void serialEvent() {
 				Serial.print("    FAULT!");
 			Serial.println();
 		}
+	// 'r' will toggle ring oscillator 
+	} else if (rxByte == 'r') {
+		oscEnabled ^= 1;
+		if (oscEnabled)
+			digitalWrite(OSC_EN, HIGH);
+		else
+			digitalWrite(OSC_EN, LOW);
 	}
 }
 
