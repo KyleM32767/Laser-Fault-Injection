@@ -11,17 +11,17 @@
 
 module xor_gate_top(
 	input [5:0] a,
-	//input       ro_en,
-	///output      ro_out,
+	input       ro_en,
+	output      ro_out,
 	output      q
 	);
 
 	// ring oscillator for finding the gate
-//	(* dont_touch = "true" *)
-//	ring_oscillator osc0(
-//		.en(ro_en),
-//		.osc_out(ro_out)
-//		);
+	(* dont_touch = "true" *)
+	ring_oscillator osc0(
+		.en(ro_en),
+		.osc_out(ro_out)
+		);
 	
 	assign q = a[0] ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ a[5];
 
