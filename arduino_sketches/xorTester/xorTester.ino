@@ -65,7 +65,7 @@ void testXOR(unsigned int x, bool* expected, bool* actual) {
  * configures pins and 
  */
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(115200);
 	for (int i = 0; i < N_INPUTS; i++) {
 		pinMode(INPUT_PINS[i], OUTPUT);
 	}
