@@ -17,6 +17,8 @@ module xor_gate_top(
 	output      q
 	);
 
+	wire in0;
+
 	// first input is clock if enabled in order to have photon emission
 	assign in0 = osc_en ? sysclk_n : a[0];
 
