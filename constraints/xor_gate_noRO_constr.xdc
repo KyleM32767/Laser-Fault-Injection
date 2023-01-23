@@ -7,8 +7,8 @@
 #set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets osc0/*]
 
 ## place xor gate
-set_property BEL C6LUT [get_cells q_OBUF_inst_i_1]
-set_property LOC SLICE_X0Y0 [get_cells q_OBUF_inst_i_1]
+set_property BEL C6LUT [get_cells q_OBUF_inst_i_2]
+set_property LOC SLICE_X0Y0 [get_cells q_OBUF_inst_i_2]
 
 ## Clock Signal
 set_property -dict { PACKAGE_PIN AD11  IOSTANDARD LVDS     } [get_ports { sysclk_n }]; #IO_L12N_T1_MRCC_33 Sch=sysclk_n
