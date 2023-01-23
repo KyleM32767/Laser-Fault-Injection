@@ -1,10 +1,10 @@
 '''
 	testandprogram.py
 
-	automatically runs the XOR gate test and reprograms the FPGA if needed
+	automatically runs the XOR gate test and reprograms the FPGA in the event of a fault
 
 	Author: Kyle Mitard
-	Created 
+	Created 22 Jan 2023
 '''
 
 import serial
