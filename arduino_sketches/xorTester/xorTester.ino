@@ -16,6 +16,11 @@
 // GPIO pin for ring oscillator enable
 #define OSC_EN 2
 
+// RX bytes corresponding to various commands
+#define CMD_TEST_VERBOSE 'a'
+#define CMD_TEST_NORMAL  'b'
+#define CMD_TOGGLE_OSC   'r'
+
 // input pins to XOR gate (currently set up for an ESP32)
 const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26, 25};
 
@@ -68,7 +73,7 @@ void setup() {
 	pinMode(OSC_EN, OUTPUT);
 	digitalWrite(OSC_EN, HIGH);
 
-	Serial.println("Ready\n\n");
+//	Serial.println("Ready\n\n");
 }
 
 
@@ -79,8 +84,9 @@ void serialEvent() {
 
 	char rxByte = Serial.read();
 
-	// 'a' will initiate gate test
-	if (rxByte == 'a') {
+
+	// initiate gate test, verbose output - to be used in arduino serial monitor or equivalent
+	if (rxByte == CMD_TEST_VERBOSE) {
 
 		// expected result from XOR gate
 		bool expected;
@@ -105,8 +111,30 @@ void serialEvent() {
 				Serial.print("    FAULT!");
 			Serial.println();
 		}
-	// 'r' will toggle ring oscillator 
-	} else if (rxByte == 'r') {
+	
+	// initiate gate test with normal output - to be used in automation
+	} else if (rxByte == CMD_TEST_NORMAL) {
+		for (unsigned int i = 0; i < (1<<N_INPUTS); i++) {
+
+			// expected result from XOR gate
+			bool expected;
+
+			// actual result from XOR gate
+			bool actual;
+
+			// do a test
+			testXOR(i, &expected, &actual);
+
+			// send a byte for the result
+			if (expected != actual)
+				Serial.print('F'); // fault
+			else 
+				Serial.write('~'); // no fault
+		}
+		Serial.println();
+	
+	// toggle ring oscillator
+	} else if (rxByte == CMD_TOGGLE_OSC) {
 		oscEnabled ^= 1;
 		if (oscEnabled)
 			digitalWrite(OSC_EN, HIGH);
