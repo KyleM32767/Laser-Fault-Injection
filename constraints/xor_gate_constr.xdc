@@ -4,7 +4,7 @@
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## let ring oscillators happen
-#set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets osc0/*]
+set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets osc0/*]
 
 ## place xor gate
 set_property BEL C6LUT [get_cells q_OBUF_inst_i_1]
@@ -21,7 +21,7 @@ set_property LOC SLICE_X6Y1 [get_cells osc0/b_inferred_i_7]
 set_property LOC SLICE_X7Y1 [get_cells osc0/b_inferred_i_8]
 set_property LOC SLICE_X8Y1 [get_cells osc0/b_inferred_i_9]
 set_property LOC SLICE_X9Y1 [get_cells osc0/b_inferred_i_10]
-set_property LOC SLICE_X10Y1 [get_cells osc0/b_inferred_i_11]
+set_property LOC SLICE_X1Y0 [get_cells osc0/b_inferred_i_11]
 
 ## Clock Signal
 #set_property -dict { PACKAGE_PIN AD11  IOSTANDARD LVDS     } [get_ports { sysclk_n }]; #IO_L12N_T1_MRCC_33 Sch=sysclk_n
