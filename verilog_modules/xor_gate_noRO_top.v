@@ -22,6 +22,7 @@ module xor_gate_top(
 	// first input is clock if enabled in order to have photon emission
 	assign in0 = osc_en ? sysclk_n : a[0];
 
+	(* dont_touch = "true" *)
 	assign q = in0 ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ a[5];
 
 endmodule
