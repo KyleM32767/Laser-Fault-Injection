@@ -11,19 +11,30 @@
 
 
 module xor_gate_top(
-	input [5:0] a,
-	input       osc_en,
-	input       sysclk_n,
+	input [4:0] a,        
+	input       osc_en,   // active high clock enable
+	input       sysclk_n, // diff clock input
+	input       sysclk_p, // diff clock input
 	output      q
 	);
 
-	wire in0;
+	wire in5;
 
-	// first input is clock if enabled in order to have photon emission
-	assign in0 = osc_en ? sysclk_n : a[0];
+	// clock for locating XOR gate
+	IBUFDS_IBUFDISABLE #(
+		.DIFF_TERM("FALSE"),      // Differential Termination
+		.IBUF_LOW_PWR("TRUE"),    // Low power="TRUE", Highest performance="FALSE" 
+		.IOSTANDARD("DEFAULT"),   // Specify the input I/O standard
+		.USE_IBUFDISABLE("TRUE")  // Set to "TRUE" to enable IBUFDISABLE feature
+	) IBUFDS_IBUFDISABLE_inst (
+		.O(in5),   // Buffer output
+		.I(sysclk_p),   // Diff_p buffer input (connect directly to top-level port)
+		.IB(sysclk_n), // Diff_n buffer input (connect directly to top-level port)
+		.IBUFDISABLE(~osc_en) // Buffer disable input, high=disable
+	);
 
 	(* dont_touch = "true" *)
-	assign q = in0 ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ a[5];
+	assign q = a[0] ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ in5;
 
 endmodule
 
