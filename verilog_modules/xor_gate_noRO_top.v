@@ -10,7 +10,7 @@
 */
 
 
-module xor_gate_top(
+module xor_gate_noRO_top(
 	input [4:0] a,        
 	input       osc_en,   // active high clock enable
 	input       sysclk_n, // diff clock input
@@ -18,23 +18,17 @@ module xor_gate_top(
 	output      q
 	);
 
-	wire in5;
+	wire clk;
 
-	// clock for locating XOR gate
-	IBUFDS_IBUFDISABLE #(
-		.DIFF_TERM("FALSE"),      // Differential Termination
-		.IBUF_LOW_PWR("TRUE"),    // Low power="TRUE", Highest performance="FALSE" 
-		.IOSTANDARD("DEFAULT"),   // Specify the input I/O standard
-		.USE_IBUFDISABLE("TRUE")  // Set to "TRUE" to enable IBUFDISABLE feature
-	) IBUFDS_IBUFDISABLE_inst (
-		.O(in5),   // Buffer output
-		.I(sysclk_p),   // Diff_p buffer input (connect directly to top-level port)
-		.IB(sysclk_n), // Diff_n buffer input (connect directly to top-level port)
-		.IBUFDISABLE(~osc_en) // Buffer disable input, high=disable
+	clk_wiz_0 mmcm0(
+		.resetn(osc_en),
+		.clk_in1_p(sysclk_p),
+		.clk_in1_n(sysclk_n),
+		.clk_out1(clk)
 	);
 
 	(* dont_touch = "true" *)
-	assign q = a[0] ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ in5;
+	assign q = a[0] ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ clk;
 
 endmodule
 
