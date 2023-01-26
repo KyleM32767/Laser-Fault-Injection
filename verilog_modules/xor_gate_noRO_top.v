@@ -10,20 +10,25 @@
 */
 
 
-module xor_gate_top(
-	input [5:0] a,
-	input       osc_en,
-	input       sysclk_n,
+module xor_gate_noRO_top(
+	input [4:0] a,        
+	input       osc_en,   // active high clock enable
+	input       sysclk_n, // diff clock input
+	input       sysclk_p, // diff clock input
 	output      q
 	);
 
-	wire in0;
+	wire clk;
 
-	// first input is clock if enabled in order to have photon emission
-	assign in0 = osc_en ? sysclk_n : a[0];
+	clk_wiz_0 mmcm0(
+		.resetn(osc_en),
+		.clk_in1_p(sysclk_p),
+		.clk_in1_n(sysclk_n),
+		.clk_out1(clk)
+	);
 
 	(* dont_touch = "true" *)
-	assign q = in0 ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ a[5];
+	assign q = a[0] ^ a[1] ^ a[2] ^ a[3] ^ a[4] ^ clk;
 
 endmodule
 
