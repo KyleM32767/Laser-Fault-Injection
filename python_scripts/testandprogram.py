@@ -19,7 +19,7 @@ time.sleep(2)
 # start test and get result
 tester.write(b'b')
 result = tester.readline()
-#print(result)
+print(result)
 
 # report on any faults
 nFaults = 0
@@ -40,7 +40,7 @@ if nFaults == 0:
 	print('no faults')
 else:
 	print(nFaults, 'FAULTS! reprogramming FPGA...')
-	os.system('putty -load "vernam lab" -pw ' + sys.argv[1] + ' -m vivadoscript.txt -t') # something tells me storing the password in plaintext on github is a bad idea
+	os.system('putty -load "vernam lab" -pw ' + sys.argv[1] + ' -m C:\\Users\\KyleM\\Documents\\MQP\\vivadoscript.txt -t') # something tells me storing the password in plaintext on github is a bad idea
 	print('done. verifying...')
 
 	# rerun test to see if it was reprogrammed successfully
