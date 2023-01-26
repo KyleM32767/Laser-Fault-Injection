@@ -4,3 +4,9 @@
 **/debug_custom.json
 **/debug.cfg
 **/esp32.svd
+
+# ignore things that VS Code adds
+**/.vscode
+
+# ignore compiled things
+**.exe
