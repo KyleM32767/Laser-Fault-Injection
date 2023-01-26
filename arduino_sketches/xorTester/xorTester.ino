@@ -8,7 +8,7 @@
  */
 
 // number of XOR gate inputs
-#define N_INPUTS 6
+#define N_INPUTS 5
 
 // GPIO pin for XOR gate output
 #define OUTPUT_PIN 15
@@ -22,7 +22,7 @@
 #define CMD_TOGGLE_OSC   'r'
 
 // input pins to XOR gate (currently set up for an ESP32)
-const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26, 25};
+const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26};
 
 // true if ring oscillator is enabled, false otherwise
 bool oscEnabled = true;
@@ -133,13 +133,16 @@ void serialEvent() {
 		}
 		Serial.println();
 	
-	// toggle ring oscillator
+	// toggle ring oscillator or clock
 	} else if (rxByte == CMD_TOGGLE_OSC) {
 		oscEnabled ^= 1;
-		if (oscEnabled)
+		if (oscEnabled) {
 			digitalWrite(OSC_EN, HIGH);
-		else
+			Serial.println("oscillator enabled");
+		} else {
 			digitalWrite(OSC_EN, LOW);
+			Serial.println("oscillator disabled");
+		}
 	}
 }
 
