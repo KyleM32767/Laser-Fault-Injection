@@ -13,7 +13,7 @@ import time
 import sys
 
 # open port for gate tester
-tester = serial.Serial(port='COM6', baudrate=115200, timeout=3)
+tester = serial.Serial(port=sys.argv[2], baudrate=115200, timeout=3)
 time.sleep(2)
 
 # start test and get result
