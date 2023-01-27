@@ -12,8 +12,11 @@ import os
 import time
 import sys
 
+PI_HOST     = 'pi@fe80::ae16:eb8a:4dee:14df'
+VIVADO_HOST = sys.argv[2] # maybe best to leave this hidden from github
+
 # open port for gate tester
-tester = serial.Serial(port=sys.argv[2], baudrate=115200, timeout=3)
+tester = serial.Serial(port=sys.argv[1], baudrate=115200, timeout=3)
 time.sleep(2)
 
 # start test and get result
@@ -39,8 +42,8 @@ for i in range(0, len(result) - 2):
 if nFaults == 0:
 	print('no faults')
 else:
-	print(nFaults, 'FAULTS! reprogramming FPGA...')
-	os.system('putty -load "vernam lab" -pw ' + sys.argv[1] + ' -m C:\\Users\\KyleM\\Documents\\MQP\\vivadoscript.txt -t') # something tells me storing the password in plaintext on github is a bad idea
+	print(nFaults, 'FAULTS! reprogramming FPGA...') # full path to vivado is needed due to path issues over ssh
+	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl')
 	print('done. verifying...')
 
 	# rerun test to see if it was reprogrammed successfully
