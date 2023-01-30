@@ -82,6 +82,8 @@ int XYZ::setStartAndEnd() {
 		return -1;
 	}
 	cout << "END:   (" << x2 << ", " << y2 << ", " << z2 << ")\n";
+	_endX = stod(x2);
+	_endY = stod(y2);
 
 	// attempt to move back to start position
 	if (_comm.MoveAbsolute(x1,y1,_z,NULL) != STATE_OK) {
@@ -89,5 +91,72 @@ int XYZ::setStartAndEnd() {
 		return -1;
 	}
 
+	// set initial direction
+	if (_startX > _endX)
+		_dir = RIGHT;
+	else
+		_dir = LEFT;
+	
+
+	// set y step direction
+	if (_startY > _endY)
+		_verticalStepDir = DOWN;
+	else
+		_verticalStepDir = UP;
+
 	return 0;
+}
+
+
+int XYZ::step() {
+
+	int error;
+
+	// move depending on direction
+	switch (_dir) {
+		case LEFT:
+			error = _comm.MoveRelative("1", "0", "0", NULL);
+			break;
+		case RIGHT:
+			error = _comm.MoveRelative("-1", "0", "0", NULL);
+			break;
+		case UP:
+			error = _comm.MoveRelative("0", "1", "0", NULL);
+			break;
+		case DOWN:
+			error = _comm.MoveRelative("0", "-1", "0", NULL);
+			break;
+	}
+
+	// return if there was an error
+	if (error != STATE_OK)
+		return -1;
+
+	// get new position
+	char* newX;
+	char* newY;
+	char* newZ;
+	char* newA;
+	_comm.GetPos(newX, newY, newZ, newA);
+
+	// return if there was an error
+	if (error != STATE_OK)
+		return -1;
+
+	// change row if the end is hit on the x direction
+	if ((_dir == LEFT  && stod(newX) >= _startX && stod(newX) >= _endX)
+	 || (_dir == RIGHT && stod(newX) <= _startX && stod(newX) <= _endX))
+		_dir = _verticalStepDir;
+
+	// stop if the end is hit in the y direction
+	else if ((_dir == UP   && stod(newY) >= _startY && stod(newY) >= _endY)
+		  || (_dir == DOWN && stod(newY) <= _startY && stod(newY) <= _endY))
+		_dir = STOP;
+	
+	return 0;
+}
+
+
+bool XYZ::isDone() {
+	return _dir == STOP;
 }

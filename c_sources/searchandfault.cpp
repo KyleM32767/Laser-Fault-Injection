@@ -9,6 +9,7 @@
  */
 
 #include "XYZ_stages/xyz.h"
+#include <windows.h>
 
 int main() {
 
@@ -17,6 +18,13 @@ int main() {
 
 	// set start and end manually
 	xyz.setStartAndEnd();
+	Sleep(5000);
+
+	// step through until done
+	while (!xyz.isDone()) {
+		xyz.step();
+		Sleep(100);
+	}
 
 	return 0;
 }

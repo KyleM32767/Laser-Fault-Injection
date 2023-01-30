@@ -13,9 +13,11 @@
  * enumerated type for the current direction of the XYZ stages
  */
 typedef enum {
-	FORWARD,  // xstep of +1
-	BACKWARD, // xstep of -1
-	DOWN      // ystep of 0
+	LEFT,  // xstep of +1
+	RIGHT, // xstep of -1
+	UP,    // ystep of +1
+	DOWN,  // ystep of -1
+	STOP   // stopped
 } XYZDirection;
 
 
@@ -28,6 +30,7 @@ public:
 	 */
 	XYZ();
 
+
 	/*
 	 * Sets the start and end positions by manually moving with the laser, then 
 	 * automatically moves to the start position
@@ -37,13 +40,23 @@ public:
 	 */
 	int setStartAndEnd();
 
-	/**
+
+	/*
 	 * Makes a step in the path 
 	 * 
 	 * Return:
 	 *  - 0 if no error or -1 otherwise
 	 */
 	int step();
+
+
+	/*
+	 * returns true if at the end of the search 
+	 * 
+	 * Return:
+	 *   1 if at the end or 0 otherwise
+	 */
+	bool isDone();
 
 private:
 
@@ -65,6 +78,9 @@ private:
 
 	// current direction of movement
 	XYZDirection _dir;
+
+	// direction to take when the end is reached
+	XYZDirection _verticalStepDir;
 
 	// instance of DLL Loader
 	Wp2CommDllLoader _comm;
