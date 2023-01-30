@@ -86,6 +86,13 @@ int main() {
 	}
 	cout << "END:   (" << x2 << ", " << y2 << ", " << z2 << ")\n";
 
+	// attempt to move back to start position
+	if (comm.MoveAbsolute(x1,y1,z1,NULL) != STATE_OK) {
+		cout << "failed to move\n";
+		return -1;
+	}
+
+	cout << "success\n";
 
 	return 0;
 }
