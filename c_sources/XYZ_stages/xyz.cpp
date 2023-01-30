@@ -26,6 +26,9 @@ double _startX;
 double _startY;
 double _startZ;
 
+char PLUS_ONE[] = "0.001";
+char MINUS_ONE[] = "-0.001";
+char ZERO[] = "0";
 
 
 void XYZ::waitForinput() {
@@ -51,6 +54,12 @@ XYZ::XYZ() {
 
 
 int XYZ::setStartAndEnd() {
+
+	// enable joystick
+	if (_comm.JoystickEnable() != STATE_OK) {
+		cout << "failed to enable Joystick\n";
+		return -1;
+	}
 
 	// at this point, move to the start position manually
 	cout << "press any key then enter when at start position\n";
@@ -104,6 +113,12 @@ int XYZ::setStartAndEnd() {
 	else
 		_verticalStepDir = UP;
 
+	// enable joystick
+	if (_comm.JoystickDisable() != STATE_OK) {
+		cout << "failed to disable Joystick\n";
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -112,51 +127,83 @@ int XYZ::step() {
 
 	int error;
 
+	cout << "moved ";
+
 	// move depending on direction
 	switch (_dir) {
 		case LEFT:
-			error = _comm.MoveRelative("1", "0", "0", NULL);
+			error = _comm.MoveRelative(PLUS_ONE, ZERO, ZERO, NULL);
+			cout << "left to  ";
 			break;
 		case RIGHT:
-			error = _comm.MoveRelative("-1", "0", "0", NULL);
+			error = _comm.MoveRelative(MINUS_ONE, ZERO, ZERO, NULL);
+			cout << "right to ";
 			break;
 		case UP:
-			error = _comm.MoveRelative("0", "1", "0", NULL);
+			error = _comm.MoveRelative(ZERO, PLUS_ONE, ZERO, NULL);
+			cout << "up to    ";
 			break;
 		case DOWN:
-			error = _comm.MoveRelative("0", "-1", "0", NULL);
+			error = _comm.MoveRelative(ZERO, MINUS_ONE, ZERO, NULL);
+			cout << "down to  ";
 			break;
 	}
 
 	// return if there was an error
-	if (error != STATE_OK)
+	if (error != STATE_OK) {
+		cout << "error moving\n";
 		return -1;
+	}
 
 	// get new position
-	char* newX;
-	char* newY;
-	char* newZ;
-	char* newA;
+	char* newX = new char[20];
+	char* newY = new char[20];
+	char* newZ = new char[20];
+	char* newA = new char[20];
 	_comm.GetPos(newX, newY, newZ, newA);
+	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n";
 
 	// return if there was an error
-	if (error != STATE_OK)
+	if (error != STATE_OK) {
+		cout << "error getting position\n";
 		return -1;
+	}
 
-	// change row if the end is hit on the x direction
+	// go to a vertical step at the end of a row 
 	if ((_dir == LEFT  && stod(newX) >= _startX && stod(newX) >= _endX)
 	 || (_dir == RIGHT && stod(newX) <= _startX && stod(newX) <= _endX))
 		_dir = _verticalStepDir;
-
-	// stop if the end is hit in the y direction
-	else if ((_dir == UP   && stod(newY) >= _startY && stod(newY) >= _endY)
-		  || (_dir == DOWN && stod(newY) <= _startY && stod(newY) <= _endY))
-		_dir = STOP;
 	
+	
+	else if (_dir == _verticalStepDir) {
+		
+		// stop if the end is hit in the y direction
+		if ((_dir == UP   && stod(newY) && stod(newY) >= _endY)
+		 || (_dir == DOWN && stod(newY) && stod(newY) <= _endY))
+			_dir = STOP;
+		
+		// after a vertical step, go back to horizontal
+		else if (stod(newX) >= _startX && stod(newX) >= _endX)
+			_dir = RIGHT;
+		else
+			_dir = LEFT;
+
+	}
+	
+	// delete stuff
+	delete newX;
+	delete newY;
+	delete newZ;
+	delete newA;
+
 	return 0;
 }
 
 
 bool XYZ::isDone() {
+	
+	if (_dir == STOP) 
+		_comm.JoystickEnable();
+	
 	return _dir == STOP;
 }

@@ -10,6 +10,8 @@
 
 #include "XYZ_stages/xyz.h"
 #include <windows.h>
+#include <iostream>
+using namespace std;
 
 int main() {
 
@@ -17,13 +19,21 @@ int main() {
 	XYZ xyz;
 
 	// set start and end manually
-	xyz.setStartAndEnd();
+	if (xyz.setStartAndEnd() != 0) {
+		cout << "failed to set start and end\n";
+		return -1;
+	}
 	Sleep(5000);
 
 	// step through until done
 	while (!xyz.isDone()) {
-		xyz.step();
-		Sleep(100);
+		
+		try {
+			xyz.step();
+		} catch (exception e) {
+			cout << e.what() << endl;
+		}
+		Sleep(1000);
 	}
 
 	return 0;

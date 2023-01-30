@@ -10,3 +10,6 @@
 
 # ignore compiled things
 **.exe
+
+# ignore whatever this is
+**.gch
