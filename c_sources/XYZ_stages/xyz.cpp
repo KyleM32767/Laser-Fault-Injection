@@ -7,9 +7,8 @@
  * Created 27 Jan 2023
  */
 
+#include "xyz.h"
 #include <iostream>
-#include <fstream>
-#include "Wp2CommDllLoader.h"
 
 using namespace std;
 
@@ -23,10 +22,13 @@ using namespace std;
 #define MODE_SYNCHRONOUS  (DWORD) 1050884
 
 
-/*
- * Waits for the user to type any character
- */
-void waitForinput() {
+double _startX;
+double _startY;
+double _startZ;
+
+
+
+void XYZ::waitForinput() {
 	char in = '\0';
 	while (in == '\0') {
 		cin >> in;
@@ -34,26 +36,21 @@ void waitForinput() {
 }
 
 
-/* 
- * Main Processing
- */
-int main() {
-	
-	// instance of DLL loader
-	Wp2CommDllLoader comm;
-
+XYZ::XYZ() {
 	// attempt to initialize
-	if (comm.InitController(CORVUS_CONTROLLER, N_AXES, XYZ_PORT,
+	if (_comm.InitController(CORVUS_CONTROLLER, N_AXES, XYZ_PORT,
 	                        BAUD_RATE, 0, 0, MODE_SYNCHRONOUS) != STATE_OK) {
 		cout << "failed to initialize controller\n";
-		return -1;
 	}
 
 	// attempt to open controller
-	if (comm.OpenController() != STATE_OK) {
+	if (_comm.OpenController() != STATE_OK) {
 		cout << "failed to open controller\n";
-		return -1;
 	}
+}
+
+
+int XYZ::setStartAndEnd() {
 
 	// at this point, move to the start position manually
 	cout << "press any key then enter when at start position\n";
@@ -62,14 +59,14 @@ int main() {
 	// attempt to get start position
 	char* x1 = new char[20];
 	char* y1 = new char[20];
-	char* z1 = new char[20];
 	char* a1 = new char[20];
-	if (comm.GetPos(x1, y1, z1, a1) != STATE_OK) {
+	if (_comm.GetPos(x1, y1, _z, a1) != STATE_OK) {
 		cout << "failed to get position\n";
 		return -1;
 	}
-	cout << "START: (" << x1 << ", " << y1 << ", " << z1 << ")\n";
-
+	cout << "START: (" << x1 << ", " << y1 << ", " << _z << ")\n";
+	_startX = stod(x1);
+	_startY = stod(y1);
 
 	// at this point, move to the end position manually
 	cout << "press any key then enter when at end position\n";
@@ -80,19 +77,17 @@ int main() {
 	char* y2 = new char[20];
 	char* z2 = new char[20];
 	char* a2 = new char[20];
-	if (comm.GetPos(x2, y2, z2, a2) != STATE_OK) {
+	if (_comm.GetPos(x2, y2, z2, a2) != STATE_OK) {
 		cout << "failed to get position\n";
 		return -1;
 	}
 	cout << "END:   (" << x2 << ", " << y2 << ", " << z2 << ")\n";
 
 	// attempt to move back to start position
-	if (comm.MoveAbsolute(x1,y1,z1,NULL) != STATE_OK) {
+	if (_comm.MoveAbsolute(x1,y1,_z,NULL) != STATE_OK) {
 		cout << "failed to move\n";
 		return -1;
 	}
-
-	cout << "success\n";
 
 	return 0;
 }
