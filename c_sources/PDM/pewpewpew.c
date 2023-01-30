@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include "pdmv5.h"
+#include "pewpewpew.h"
 
 // Serial port for laser 
 #define LASER_PORT "COM4"
@@ -23,9 +24,17 @@
 #define FREQUENCY    100000 // Hz
 #define RUN_TIME     3000   // ms
 
-int main() {
+// the serial port for the laser
+struct sp_port* p;
 
-	struct sp_port* p;
+
+/*
+ * sets up the laser
+ * 
+ * Return:
+ *  - 0 if success, -1 otherwise
+ */
+int laser_init() {
 
 	// open serial port
 	if (OpenCommunication_PDMv5(LASER_PORT, &p) != SP_OK) {
@@ -46,6 +55,16 @@ int main() {
 		printf("error setting frequency\n");
 		return -1;
 	}
+}
+
+
+/*
+ * Fires the laser for a few seconds
+ * 
+ * Return:
+ *  - 0 if success, -1 otherwise 
+ */
+int pewpewpew() {
 
 	// turn on the laser
 	if (SetLaserStatus_PDMv5(p, ADDR, 1) != 0) {

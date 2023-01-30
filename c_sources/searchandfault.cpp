@@ -9,6 +9,8 @@
  */
 
 #include "XYZ_stages/xyz.h"
+#include "PDM/pewpewpew.h"
+
 #include <windows.h>
 #include <iostream>
 using namespace std;
@@ -23,16 +25,36 @@ int main() {
 		cout << "failed to set start and end\n";
 		return -1;
 	}
+
+	// set start and end manually
+	if (laser_init() != 0) {
+		cout << "failed to setup laser\n";
+		return -1;
+	}
+
+
+	// wait a bit
 	Sleep(5000);
 
 	// step through until done
 	while (!xyz.isDone()) {
 		
-		try {
-			xyz.step();
-		} catch (exception e) {
-			cout << e.what() << endl;
+		// fire the laser
+		if (pewpewpew() != 0) {
+			cout << "Error firing laser\n";
+			return -1;
 		}
+
+		// test the xor gate
+		system("python ../python_scripts/testandprogram.py COM15");
+
+		// take a step
+		if (xyz.step() != 0) {
+			cout << "Error taking step\n";
+			return -1;
+		}
+
+		// wait a bit
 		Sleep(1000);
 	}
 
