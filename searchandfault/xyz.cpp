@@ -43,12 +43,12 @@ XYZ::XYZ() {
 	// attempt to initialize
 	if (_comm.InitController(CORVUS_CONTROLLER, N_AXES, XYZ_PORT,
 	                        BAUD_RATE, 0, 0, MODE_SYNCHRONOUS) != STATE_OK) {
-		cout << "failed to initialize controller\n";
+		cout << "failed to initialize controller\n" << flush;
 	}
 
 	// attempt to open controller
 	if (_comm.OpenController() != STATE_OK) {
-		cout << "failed to open controller\n";
+		cout << "failed to open controller\n" << flush;
 	}
 }
 
@@ -57,12 +57,12 @@ int XYZ::setStartAndEnd() {
 
 	// enable joystick
 	if (_comm.JoystickEnable() != STATE_OK) {
-		cout << "failed to enable Joystick\n";
+		cout << "failed to enable Joystick\n" << flush;
 		return -1;
 	}
 
 	// at this point, move to the start position manually
-	cout << "press any key then enter when at start position\n";
+	cout << "press any key then enter when at start position\n" << flush;
 	waitForinput();
 
 	// attempt to get start position
@@ -70,15 +70,15 @@ int XYZ::setStartAndEnd() {
 	char* y1 = new char[20];
 	char* a1 = new char[20];
 	if (_comm.GetPos(x1, y1, _z, a1) != STATE_OK) {
-		cout << "failed to get position\n";
+		cout << "failed to get position\n" << flush;
 		return -1;
 	}
-	cout << "START: (" << x1 << ", " << y1 << ", " << _z << ")\n";
+	cout << "START: (" << x1 << ", " << y1 << ", " << _z << ")\n" << flush;
 	_startX = stod(x1);
 	_startY = stod(y1);
 
 	// at this point, move to the end position manually
-	cout << "press any key then enter when at end position\n";
+	cout << "press any key then enter when at end position\n" << flush;
 	waitForinput();
 
 	// attempt to get start position
@@ -87,16 +87,16 @@ int XYZ::setStartAndEnd() {
 	char* z2 = new char[20];
 	char* a2 = new char[20];
 	if (_comm.GetPos(x2, y2, z2, a2) != STATE_OK) {
-		cout << "failed to get position\n";
+		cout << "failed to get position\n" << flush;
 		return -1;
 	}
-	cout << "END:   (" << x2 << ", " << y2 << ", " << z2 << ")\n";
+	cout << "END:   (" << x2 << ", " << y2 << ", " << z2 << ")\n" << flush;
 	_endX = stod(x2);
 	_endY = stod(y2);
 
 	// attempt to move back to start position
 	if (_comm.MoveAbsolute(x1,y1,_z,NULL) != STATE_OK) {
-		cout << "failed to move\n";
+		cout << "failed to move\n" << flush;
 		return -1;
 	}
 
@@ -113,11 +113,11 @@ int XYZ::setStartAndEnd() {
 	else
 		_verticalStepDir = UP;
 
-	// // enable joystick
-	// if (_comm.JoystickDisable() != STATE_OK) {
-	// 	cout << "failed to disable Joystick\n";
-	// 	return -1;
-	// }
+	// enable joystick
+	if (_comm.JoystickEnable() != STATE_OK) {
+		cout << "failed to disable Joystick\n";
+		return -1;
+	}
 
 	return 0;
 }
@@ -151,7 +151,7 @@ int XYZ::step() {
 
 	// return if there was an error
 	if (error != STATE_OK) {
-		cout << "error moving\n";
+		cout << "error moving\n" << flush;
 		return -1;
 	}
 
@@ -161,11 +161,11 @@ int XYZ::step() {
 	char* newZ = new char[20];
 	char* newA = new char[20];
 	_comm.GetPos(newX, newY, newZ, newA);
-	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n";
+	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n << flush";
 
 	// return if there was an error
 	if (error != STATE_OK) {
-		cout << "error getting position\n";
+		cout << "error getting position\n" << flush;
 		return -1;
 	}
 

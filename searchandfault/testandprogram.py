@@ -13,7 +13,7 @@ import time
 import sys
 
 PI_HOST     = 'pi@fe80::ae16:eb8a:4dee:14df'
-VIVADO_HOST = 'dev@130.215.23.103' # maybe best to leave this hidden from github
+VIVADO_HOST = 'dev@130.215.23.103'
 
 # open port for gate tester
 tester = serial.Serial(port=sys.argv[1], baudrate=115200, timeout=3)

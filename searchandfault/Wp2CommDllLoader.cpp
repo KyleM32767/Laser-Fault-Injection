@@ -74,155 +74,155 @@ Wp2CommDllLoader::Wp2CommDllLoader(){
 	{
 		cout << " Dll successfuly loaded..." << endl << endl;
 
-		cout << "DLL functions loading State: (0 = OK, -2 = error function not load)" << endl;
+		// cout << "DLL functions loading State: (0 = OK, -2 = error function not load)" << endl;
 
 		m_InitController = (PInitController)GetProcAddress(hITKVenus, "InitController");
 		if (!m_InitController) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "InitController " << m_DLLResultat << endl;
+		// cout << "InitController " << m_DLLResultat << endl;
 
 		m_OpenController = (POpenController)GetProcAddress(hITKVenus, "OpenController");
 		if (!m_OpenController) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "OpenController " << m_DLLResultat << endl;
+		// cout << "OpenController " << m_DLLResultat << endl;
 
 		m_CloseController = (PCloseController)GetProcAddress(hITKVenus, "CloseController");
 		if (!m_CloseController) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "CloseController " << m_DLLResultat << endl;
+		// cout << "CloseController " << m_DLLResultat << endl;
 
 		m_ExecuteCommand = (PExecuteCommand)GetProcAddress(hITKVenus, "ExecuteCommand");
 		if (!m_ExecuteCommand) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "ExecuteCommand " << m_DLLResultat << endl;
+		// cout << "ExecuteCommand " << m_DLLResultat << endl;
 
 		m_GetReply = (PGetReply)GetProcAddress(hITKVenus, "GetReply");
 		if (!m_GetReply) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetReply " << m_DLLResultat << endl;
+		// cout << "GetReply " << m_DLLResultat << endl;
 
 		m_RangeMeasure = (PRangeMeasure)GetProcAddress(hITKVenus, "RangeMeasure");
 		if (!m_RangeMeasure) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "RangeMeasure " << m_DLLResultat << endl;
+		// cout << "RangeMeasure " << m_DLLResultat << endl;
 
 		m_AbortCommand = (PAbortCommand)GetProcAddress(hITKVenus, "AbortCommand");
 		if (!m_AbortCommand) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "AbortCommand " << m_DLLResultat << endl;
+		// cout << "AbortCommand " << m_DLLResultat << endl;
 
 		m_Calibrate = (PAbortCommand)GetProcAddress(hITKVenus, "Calibrate");
 		if (!m_Calibrate) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "Calibrate " << m_DLLResultat << endl;
+		// cout << "Calibrate " << m_DLLResultat << endl;
 
 		m_GetAcceleration = (PGetAcceleration)GetProcAddress(hITKVenus, "GetAcceleration");
 		if (!m_GetAcceleration) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetAcceleration " << m_DLLResultat << endl;
+		// cout << "GetAcceleration " << m_DLLResultat << endl;
 
 		m_SetAcceleration = (PSetAcceleration)GetProcAddress(hITKVenus, "SetAcceleration");
 		if (!m_SetAcceleration) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetAcceleration " << m_DLLResultat << endl;
+		// cout << "SetAcceleration " << m_DLLResultat << endl;
 
 		m_GetDllVersion = (PGetDllVersion)GetProcAddress(hITKVenus, "GetDllVersion");
 		if (!m_GetDllVersion) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetDllVersion " << m_DLLResultat << endl;
+		// cout << "GetDllVersion " << m_DLLResultat << endl;
 
 		m_GetVelocity = (PGetVelocity)GetProcAddress(hITKVenus, "GetVelocity");
 		if (!m_GetVelocity) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetVelocity " << m_DLLResultat << endl;
+		// cout << "GetVelocity " << m_DLLResultat << endl;
 
 		m_SetVelocity = (PSetVelocity)GetProcAddress(hITKVenus, "SetVelocity");
 		if (!m_SetVelocity) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetVelocity " << m_DLLResultat << endl;
+		// cout << "SetVelocity " << m_DLLResultat << endl;
 
 		m_IsClearBufferEmpty = (PIsClearBufferEmpty)GetProcAddress(hITKVenus, "IsClearBufferEmpty");
 		if (!m_IsClearBufferEmpty) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "IsClearBufferEmpty " << m_DLLResultat << endl;
+		// cout << "IsClearBufferEmpty " << m_DLLResultat << endl;
 
 		m_Identify = (PIdentify)GetProcAddress(hITKVenus, "Identify");
 		if (!m_Identify) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "Identify " << m_DLLResultat << endl;
+		// cout << "Identify " << m_DLLResultat << endl;
 
 		m_GetStatus = (PGetStatus)GetProcAddress(hITKVenus, "GetStatus");
 		if (!m_GetStatus) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetStatus " << m_DLLResultat << endl;
+		// cout << "GetStatus " << m_DLLResultat << endl;
 
 		m_GetError = (PGetError)GetProcAddress(hITKVenus, "GetError");
 		if (!m_GetError) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetError " << m_DLLResultat << endl;
+		// cout << "GetError " << m_DLLResultat << endl;
 
 		m_GetLimits = (PGetLimits)GetProcAddress(hITKVenus, "GetLimits");
 		if (!m_GetLimits) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetLimits " << m_DLLResultat << endl;
+		// cout << "GetLimits " << m_DLLResultat << endl;
 
 		m_GetParamsOnStack = (PGetParamsOnStack)GetProcAddress(hITKVenus, "GetParamsOnStack");
 		if (!m_GetParamsOnStack) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetParamsOnStack " << m_DLLResultat << endl;
+		// cout << "GetParamsOnStack " << m_DLLResultat << endl;
 
 		m_ClearParameterStack = (PClearParameterStack)GetProcAddress(hITKVenus, "ClearParameterStack");
 		if (!m_ClearParameterStack) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "ClearParameterStack " << m_DLLResultat << endl;
+		// cout << "ClearParameterStack " << m_DLLResultat << endl;
 
 		m_GetPos = (PGetPos)GetProcAddress(hITKVenus, "GetPos");
 		if (!m_GetPos) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetPos " << m_DLLResultat << endl;
+		// cout << "GetPos " << m_DLLResultat << endl;
 
 		m_MoveAbsolute = (PMoveAbsolute)GetProcAddress(hITKVenus, "MoveAbsolute");
 		if (!m_MoveAbsolute) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "MoveAbsolute " << m_DLLResultat << endl;
+		// cout << "MoveAbsolute " << m_DLLResultat << endl;
 
 		m_MoveRelative = (PMoveRelative)GetProcAddress(hITKVenus, "MoveRelative");
 		if (!m_MoveRelative) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "MoveRelative " << m_DLLResultat << endl;
+		// cout << "MoveRelative " << m_DLLResultat << endl;
 
 		m_MoveAbsoluteAutoReply = (PMoveAbsoluteAutoReply)GetProcAddress(hITKVenus, "MoveAbsoluteAutoReply");
 		if (!m_MoveAbsoluteAutoReply) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "MoveAbsoluteAutoReply " << m_DLLResultat << endl;
+		// cout << "MoveAbsoluteAutoReply " << m_DLLResultat << endl;
 
 		m_MoveRelativeAutoReply = (PMoveRelativeAutoReply)GetProcAddress(hITKVenus, "MoveRelativeAutoReply");
 		if (!m_MoveRelativeAutoReply) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "MoveRelativeAutoReply " << m_DLLResultat << endl;
+		// cout << "MoveRelativeAutoReply " << m_DLLResultat << endl;
 
 		m_ResetComm = (PResetComm)GetProcAddress(hITKVenus, "ResetComm");
 		if (!m_ResetComm) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "ResetComm " << m_DLLResultat << endl;
+		// cout << "ResetComm " << m_DLLResultat << endl;
 
 		m_JoystickEnable = (PJoystickEnable)GetProcAddress(hITKVenus, "JoystickEnable");
 		if (!m_JoystickEnable) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "JoystickEnable " << m_DLLResultat << endl;
+		// cout << "JoystickEnable " << m_DLLResultat << endl;
 
 		m_JoystickDisable = (PJoystickDisable)GetProcAddress(hITKVenus, "JoystickDisable");
 		if (!m_JoystickDisable) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "JoystickDisable " << m_DLLResultat << endl;
+		// cout << "JoystickDisable " << m_DLLResultat << endl;
 
 		m_GetJoystickVelocity = (PGetJoystickVelocity)GetProcAddress(hITKVenus, "GetJoystickVelocity");
 		if (!m_GetJoystickVelocity) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetJoystickVelocity " << m_DLLResultat << endl;
+		// cout << "GetJoystickVelocity " << m_DLLResultat << endl;
 
 		m_SetJoystickVelocity = (PSetJoystickVelocity)GetProcAddress(hITKVenus, "SetJoystickVelocity");
 		if (!m_SetJoystickVelocity) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetJoystickVelocity " << m_DLLResultat << endl;
+		// cout << "SetJoystickVelocity " << m_DLLResultat << endl;
 
 		m_GetAxisMode = (PGetAxisMode)GetProcAddress(hITKVenus, "GetAxisMode");
 		if (!m_GetAxisMode) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "GetAxisMode " << m_DLLResultat << endl;
+		// cout << "GetAxisMode " << m_DLLResultat << endl;
 
 		m_SetAxisMode = (PSetAxisMode)GetProcAddress(hITKVenus, "SetAxisMode");
 		if (!m_SetAxisMode) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetAxisMode " << m_DLLResultat << endl;
+		// cout << "SetAxisMode " << m_DLLResultat << endl;
 
 		m_SetOrigin = (PSetOrigin)GetProcAddress(hITKVenus, "SetOrigin");
 		if (!m_SetOrigin) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetOrigin " << m_DLLResultat << endl;
+		// cout << "SetOrigin " << m_DLLResultat << endl;
 
 		m_PreprocessReply = (PPreprocessReply)GetProcAddress(hITKVenus, "PreprocessReply");
 		if (!m_PreprocessReply) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "PreprocessReply " << m_DLLResultat << endl;
+		// cout << "PreprocessReply " << m_DLLResultat << endl;
 
 		m_SetClearBufferEmpty = (PSetClearBufferEmpty)GetProcAddress(hITKVenus, "SetClearBufferEmpty");
 		if (!m_SetClearBufferEmpty) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetClearBufferEmpty " << m_DLLResultat << endl;
+		// cout << "SetClearBufferEmpty " << m_DLLResultat << endl;
 
 		m_SetDecimalSeparator = (PSetDecimalSeparator)GetProcAddress(hITKVenus, "SetDecimalSeparator");
 		if (!m_SetDecimalSeparator) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetDecimalSeparator " << m_DLLResultat << endl;
+		// cout << "SetDecimalSeparator " << m_DLLResultat << endl;
 
 		m_SetSleepWhileWaitingWithoutTimeout = (PSetSleepWhileWaitingWithoutTimeout)GetProcAddress(hITKVenus, "SetSleepWhileWaitingWithoutTimeout");
 		if (!m_SetSleepWhileWaitingWithoutTimeout) m_DLLResultat = -2; else m_DLLResultat = 0;
-		cout << "SetSleepWhileWaitingWithoutTimeout " << m_DLLResultat << endl;
+		// cout << "SetSleepWhileWaitingWithoutTimeout " << m_DLLResultat << endl;
 	}
 }
 

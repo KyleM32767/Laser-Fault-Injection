@@ -22,13 +22,13 @@ int main() {
 
 	// set start and end manually
 	if (xyz.setStartAndEnd() != 0) {
-		cout << "failed to set start and end\n";
+		cout << "failed to set start and end\n" << flush;
 		return -1;
 	}
 
 	// set start and end manually
 	if (laser_init() != 0) {
-		cout << "failed to setup laser\n";
+		cout << "failed to setup laser\n" << flush;
 		return -1;
 	}
 
@@ -41,18 +41,19 @@ int main() {
 		
 		// fire the laser
 		if (pewpewpew() != 0) {
-			cout << "Error firing laser\n";
+			cout << "Error firing laser\n" << flush;
 			return -1;
 		}
-
-		cout << flush;
 
 		// test the xor gate
 		system("python testandprogram.py COM15");
 
+		// insert a newline
+		cout << "\n\n" << flush;
+
 		// take a step
 		if (xyz.step() != 0) {
-			cout << "Error taking step\n";
+			cout << "Error taking step\n" << flush;
 			return -1;
 		}
 
