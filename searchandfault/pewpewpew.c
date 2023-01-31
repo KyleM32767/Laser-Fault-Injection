@@ -37,7 +37,8 @@ struct sp_port* p;
 int laser_init() {
 
 	// open serial port
-	if (OpenCommunication_PDMv5(LASER_PORT, &p) != SP_OK) {
+	char strport[] = LASER_PORT;
+	if (OpenCommunication_PDMv5(strport, &p) != SP_OK) {
 		printf("error opening port\n");
 		return -1;
 	}

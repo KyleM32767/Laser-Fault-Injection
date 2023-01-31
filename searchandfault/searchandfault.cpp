@@ -8,8 +8,8 @@
  * Created 30 Jan 2023
  */
 
-#include "XYZ_stages/xyz.h"
-#include "PDM/pewpewpew.h"
+#include "xyz.h"
+#include "pewpewpew.h"
 
 #include <windows.h>
 #include <iostream>
@@ -45,8 +45,10 @@ int main() {
 			return -1;
 		}
 
+		cout << flush;
+
 		// test the xor gate
-		system("python ../python_scripts/testandprogram.py COM15");
+		system("python testandprogram.py COM15");
 
 		// take a step
 		if (xyz.step() != 0) {

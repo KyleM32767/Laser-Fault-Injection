@@ -26,8 +26,8 @@ double _startX;
 double _startY;
 double _startZ;
 
-char PLUS_ONE[] = "0.001";
-char MINUS_ONE[] = "-0.001";
+char PLUS_ONE[] = "0.005";
+char MINUS_ONE[] = "-0.005";
 char ZERO[] = "0";
 
 
@@ -113,11 +113,11 @@ int XYZ::setStartAndEnd() {
 	else
 		_verticalStepDir = UP;
 
-	// enable joystick
-	if (_comm.JoystickDisable() != STATE_OK) {
-		cout << "failed to disable Joystick\n";
-		return -1;
-	}
+	// // enable joystick
+	// if (_comm.JoystickDisable() != STATE_OK) {
+	// 	cout << "failed to disable Joystick\n";
+	// 	return -1;
+	// }
 
 	return 0;
 }
