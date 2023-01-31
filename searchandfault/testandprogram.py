@@ -11,6 +11,7 @@ import serial
 import os
 import time
 import sys
+from PIL import ImageGrab
 
 PI_HOST     = 'pi@fe80::ae16:eb8a:4dee:14df'
 VIVADO_HOST = 'dev@130.215.23.103'
@@ -42,7 +43,16 @@ for i in range(0, len(result) - 2):
 if nFaults == 0:
 	print('no faults')
 else:
-	print(nFaults, 'FAULTS! reprogramming FPGA...') # full path to vivado is needed due to path issues over ssh
+	
+	print(nFaults, 'FAULTS! reprogramming FPGA...')
+	
+	# take a screenshot of lucie
+	ss_region = (0, 0, 1920, 1080)
+	ss_img = ImageGrab.grab(ss_region)
+	ss_img.save("xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".jpg")
+
+	# do a double nested ssh to run vivado without connecting to the internet
+	# full path to vivado is needed due to path issues over ssh
 	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl')
 	print('done. verifying...')
 
