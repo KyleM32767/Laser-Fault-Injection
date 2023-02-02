@@ -17,9 +17,10 @@
 #define OSC_EN 2
 
 // RX bytes corresponding to various commands
-#define CMD_TEST_VERBOSE 'a'
-#define CMD_TEST_NORMAL  'b'
-#define CMD_TOGGLE_OSC   'r'
+#define CMD_TEST_VERBOSE   'a'
+#define CMD_TEST_NORMAL    'b'
+#define CMD_TEST_FAULTTYPE 'c'
+#define CMD_TOGGLE_OSC     'r'
 
 // input pins to XOR gate (currently set up for an ESP32)
 const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26};
@@ -132,7 +133,30 @@ void serialEvent() {
 				Serial.write('~'); // no fault
 		}
 		Serial.println();
+
 	
+	} else if (rxByte == CMD_TEST_FAULTTYPE) {
+		for (unsigned int i = 0; i < (1<<N_INPUTS); i++) {
+
+			// expected result from XOR gate
+			bool expected;
+
+			// actual result from XOR gate
+			bool actual;
+
+			// do a test
+			testXOR(i, &expected, &actual);
+
+			// send a byte for the result
+			if (expected == actual)
+				Serial.print('~'); // no fault
+			else if (actual == 0)
+				Serial.write('1'); // 1 to 0 fault
+			else if (actual == 1)
+				Serial.write('0'); // 0 to 1 fault
+		}
+		Serial.println();
+
 	// toggle ring oscillator or clock
 	} else if (rxByte == CMD_TOGGLE_OSC) {
 		oscEnabled ^= 1;
