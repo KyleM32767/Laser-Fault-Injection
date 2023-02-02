@@ -13,3 +13,5 @@
 
 # ignore whatever this is
 **.gch
+
+searchandfault/img/**

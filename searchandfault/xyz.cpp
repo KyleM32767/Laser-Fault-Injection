@@ -26,8 +26,8 @@ double _startX;
 double _startY;
 double _startZ;
 
-char PLUS_ONE[] = "0.005";
-char MINUS_ONE[] = "-0.005";
+char PLUS_ONE[] = "0.002";
+char MINUS_ONE[] = "-0.002";
 char ZERO[] = "0";
 
 
@@ -161,7 +161,7 @@ int XYZ::step() {
 	char* newZ = new char[20];
 	char* newA = new char[20];
 	_comm.GetPos(newX, newY, newZ, newA);
-	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n << flush";
+	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n" << flush;
 
 	// return if there was an error
 	if (error != STATE_OK) {
@@ -188,6 +188,12 @@ int XYZ::step() {
 		else
 			_dir = LEFT;
 
+	}
+
+	// enable joystick
+	if (_comm.JoystickEnable() != STATE_OK) {
+		cout << "failed to disable Joystick\n";
+		return -1;
 	}
 	
 	// delete stuff

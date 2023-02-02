@@ -23,7 +23,7 @@ time.sleep(2)
 # start test and get result
 tester.write(b'b')
 result = tester.readline()
-print(result)
+#print(result)
 
 # report on any faults
 nFaults = 0
@@ -32,7 +32,7 @@ for i in range(0, len(result) - 2):
 	# report a fault if found
 	if result[i] == ord('F'):
 		nFaults += 1
-		print('fault at input', bin(i)[2:])
+		#print('fault at input', bin(i)[2:])
 	
 	# there are no other possible characters for faults
 	elif result[i] != ord('~'):
@@ -49,7 +49,7 @@ else:
 	# take a screenshot of lucie
 	ss_region = (0, 0, 1920, 1080)
 	ss_img = ImageGrab.grab(ss_region)
-	ss_img.save("xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".jpg")
+	ss_img.save("img/xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".jpg")
 
 	# do a double nested ssh to run vivado without connecting to the internet
 	# full path to vivado is needed due to path issues over ssh
