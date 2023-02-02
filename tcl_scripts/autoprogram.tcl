@@ -1,5 +1,6 @@
 open_hw_manager
 connect_hw_server -url 130.215.23.113:3121
+refresh_hw_server
 current_hw_target [get_hw_targets */xilinx_tcf/Digilent/200300B18CC7B]
 set_property PARAM.FREQUENCY 15000000 [get_hw_targets */xilinx_tcf/Digilent/200300B18CC7B]
 open_hw_target
