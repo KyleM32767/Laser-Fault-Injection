@@ -13,12 +13,19 @@
 
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 int main() {
 
 	// XYZ stages instance
 	XYZ xyz;
+
+	// set reference point manually
+	if (xyz.setRefPoint() != 0) {
+		cout << "failed to set ref point\n" << flush;
+		return -1;
+	}
 
 	// set start and end manually
 	if (xyz.setStartAndEnd() != 0) {

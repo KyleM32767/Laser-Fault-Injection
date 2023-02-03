@@ -32,6 +32,15 @@ public:
 
 
 	/*
+	 * Sets the reference point for the image and writes it to result/refpoint.txt
+	 * 
+	 * Return:
+	 *  - 0 if no error or -1 otherwise
+	 */
+	int setRefPoint();
+
+
+	/*
 	 * Sets the start and end positions by manually moving with the laser, then 
 	 * automatically moves to the start position
 	 * 

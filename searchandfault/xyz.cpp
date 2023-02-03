@@ -9,6 +9,7 @@
 
 #include "xyz.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -50,6 +51,63 @@ XYZ::XYZ() {
 	if (_comm.OpenController() != STATE_OK) {
 		cout << "failed to open controller\n" << flush;
 	}
+}
+
+
+/*
+ * Sets the reference point for the image and writes it to result/refpoint.txt
+ * 
+ * Return:
+ *  - 0 if no error or -1 otherwise
+ */
+int setRefPoint() {
+
+	// enable joystick
+	if (_comm.JoystickEnable() != STATE_OK) {
+		cout << "failed to enable Joystick\n" << flush;
+		return -1;
+	}
+
+	// stream for reference point file 
+	ofstream refPoint;
+	refPoint.open("result/refpoint.txt");
+
+	// instructions
+	char inBuf[30];
+	cout << "First, a reference point must be set by following these steps..." << endl 
+		 << "\t1) Open LUCIE and take a picture of the area, and save it to result/map.png" << endl
+		 << "\t3) Using the joystick, aim the laser such that it is on top of a point that is easy to locate on the image" << endl
+		 << "\t3) Open MS paint and find the pixel location of where you aimed on the image you took in step 1" << endl
+		 << "\t4) Type the coordinates below" << endl
+		 << "after you are done typing the Y-coordinate, the position of the stages will be taken and written" << flush;
+	
+	// write image coordinates to reference file
+	cout << "x = " << flush;
+	cin >> inBuf;
+	refPoint << inBuf << endl;
+	cout << "y = " << flush;
+	cin >> inBuf;
+	refPoint << inBuf << endl;
+	
+	// get IRL position and write to reference file
+	char* x1 = new char[20];
+	char* y1 = new char[20];
+	char* z1 = new char[20];
+	char* a1 = new char[20];
+	if (_comm.GetPos(x1, y1, z1, a1) != STATE_OK) {
+		cout << "failed to get position\n" << flush;
+		return -1;
+	}
+	refPoint << x1 << endl << y1 << endl;
+
+	// delete things
+	delete x1;
+	delete y1;
+	delete z1;
+	delete a1;
+	delete inBuf;
+
+	return 0;
 }
 
 
