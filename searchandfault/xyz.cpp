@@ -271,3 +271,29 @@ bool XYZ::isDone() {
 	
 	return _dir == STOP;
 }
+
+
+int XYZ::getPythonCmd(char* cmdBuf) {
+	
+	// get new position
+	char* newX = new char[20];
+	char* newY = new char[20];
+	char* newZ = new char[20];
+	char* newA = new char[20];
+	if (_comm.GetPos(newX, newY, newZ, newA) != STATE_OK) {
+		cout << "error getting position\n" << flush;
+		return -1;
+	}
+	
+	cmdBuf = "python testandprogram.py COM15 ";
+	strcat(cmdBuf, newX);
+	strcat(cmdBuf, " ");
+	strcat(cmdBuf, newY);
+	
+	delete newX;
+	delete newY;
+	delete newZ;
+	delete newA;
+
+	return 0;
+}

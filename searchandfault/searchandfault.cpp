@@ -43,6 +43,9 @@ int main() {
 	// wait a bit
 	Sleep(5000);
 
+	// command used to invoke the python script
+	char pythonCmd[50];
+
 	// step through until done
 	while (!xyz.isDone()) {
 		
@@ -52,8 +55,10 @@ int main() {
 			return -1;
 		}
 
+		xyz.getPythonCmd(pythonCmd);
+
 		// test the xor gate
-		system("python testandprogram.py COM15");
+		system(pythonCmd);
 
 		// insert a newline
 		cout << "\n\n" << flush;

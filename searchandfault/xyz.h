@@ -35,7 +35,7 @@ public:
 	 * Sets the reference point for the image and writes it to result/refpoint.txt
 	 * 
 	 * Return:
-	 *  - 0 if no error or -1 otherwise
+	 *   0 if no error or -1 otherwise
 	 */
 	int setRefPoint();
 
@@ -45,7 +45,7 @@ public:
 	 * automatically moves to the start position
 	 * 
 	 * Return:
-	 *  - 0 if no error or -1 otherwise
+	 *   0 if no error or -1 otherwise
 	 */
 	int setStartAndEnd();
 
@@ -54,7 +54,7 @@ public:
 	 * Makes a step in the path 
 	 * 
 	 * Return:
-	 *  - 0 if no error or -1 otherwise
+	 *   0 if no error or -1 otherwise
 	 */
 	int step();
 
@@ -66,6 +66,18 @@ public:
 	 *   1 if at the end or 0 otherwise
 	 */
 	bool isDone();
+
+
+	/*
+	 * gets the command to call the python script based on the current position
+	 * 
+	 * Params:
+	 *   cmdBuf = pointer to string buffer containing the command
+	 * 
+	 * Return:
+	 *   0 if no error or -1 otherwise
+	 */
+	int getPythonCmd(char* cmdBuf);
 
 private:
 
