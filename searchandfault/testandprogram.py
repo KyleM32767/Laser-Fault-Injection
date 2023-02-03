@@ -93,7 +93,7 @@ else:
 	# take a screenshot of lucie
 	ss_region = (0, 0, 1920, 1080)
 	ss_img = ImageGrab.grab(ss_region)
-	ss_img.save("img/xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".jpg")
+	ss_img.save("result/xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".png")
 
 
 	# determine image location using reference point
