@@ -1,7 +1,7 @@
 /*
  * xyz.cpp
  * 
- * ss
+ * Source file for a class to serve as an extra abtraction layer for XYZ stage functionality
  * 
  * Author: Kyle Mitard
  * Created 27 Jan 2023
@@ -10,23 +10,18 @@
 #include "xyz.h"
 #include <iostream>
 #include <fstream>
-
 using namespace std;
 
 // serial port for XYZ stage
 #define XYZ_PORT (DWORD) 9
 
-// these are things that won't be changed
+// controller settings that shouldn't be changed
 #define CORVUS_CONTROLLER (DWORD) 64
 #define N_AXES            (DWORD) 3
 #define BAUD_RATE         (DWORD) 57600
 #define MODE_SYNCHRONOUS  (DWORD) 1050884
 
-
-double _startX;
-double _startY;
-double _startZ;
-
+// values to be passed into moveRelative() for various step directions
 char PLUS_ONE[] = "0.002";
 char MINUS_ONE[] = "-0.002";
 char ZERO[] = "0";
@@ -54,12 +49,6 @@ XYZ::XYZ() {
 }
 
 
-/*
- * Sets the reference point for the image and writes it to result/refpoint.txt
- * 
- * Return:
- *  - 0 if no error or -1 otherwise
- */
 int XYZ::setRefPoint() {
 
 	// enable joystick
@@ -119,11 +108,11 @@ int XYZ::setStartAndEnd() {
 		return -1;
 	}
 
-	// at this point, move to the start position manually
+	// wait for confirmation that laser is manually aimed at the start position
 	cout << "press any key when at start position\n" << flush;
 	system("pause >nul");
 
-	// attempt to get start position
+	// get and set start position
 	char* x1 = new char[20];
 	char* y1 = new char[20];
 	char* a1 = new char[20];
@@ -135,11 +124,11 @@ int XYZ::setStartAndEnd() {
 	_startX = stod(x1);
 	_startY = stod(y1);
 
-	// at this point, move to the end position manually
+	// wait for confirmation that laser is manually aimed at the start position
 	cout << "press any key when at end position\n" << flush;
 	system("pause >nul");
 
-	// attempt to get start position
+	// get and set end position
 	char* x2 = new char[20];
 	char* y2 = new char[20];
 	char* z2 = new char[20];
@@ -152,7 +141,7 @@ int XYZ::setStartAndEnd() {
 	_endX = stod(x2);
 	_endY = stod(y2);
 
-	// attempt to move back to start position
+	// move back to start position
 	if (_comm.MoveAbsolute(x1,y1,_z,NULL) != STATE_OK) {
 		cout << "failed to move\n" << flush;
 		return -1;
@@ -160,24 +149,23 @@ int XYZ::setStartAndEnd() {
 
 	// set initial direction
 	if (_startX > _endX)
-		_dir = RIGHT;
+		_dir = RIGHT; // start is left of end: first move is right
 	else
-		_dir = LEFT;
+		_dir = LEFT;  // start is right of end: first move is left 
 	
-
-	// set y step direction
+	// set y step direction at end of each row
 	if (_startY > _endY)
-		_verticalStepDir = DOWN;
+		_verticalStepDir = DOWN; // start is above end: move down to get to next row
 	else
-		_verticalStepDir = UP;
+		_verticalStepDir = UP;   // end is above start: move up to get to next row
 
 	// enable joystick
 	if (_comm.JoystickEnable() != STATE_OK) {
-		cout << "failed to disable Joystick\n";
+		cout << "failed to enable Joystick\n";
 		return -1;
 	}
 
-	// draw on map image
+	// draw bounds on map image
 	char cmdBuf[50] = "";
 	strcat(cmdBuf, "python drawBounds.py ");
 	strcat(cmdBuf, x1);
@@ -195,8 +183,10 @@ int XYZ::setStartAndEnd() {
 
 int XYZ::step() {
 
+	// error code returned by wp2comm
 	int error;
 
+	// start printing direction
 	cout << "moved ";
 
 	// move depending on direction
@@ -230,7 +220,7 @@ int XYZ::step() {
 	char* newY = new char[20];
 	char* newZ = new char[20];
 	char* newA = new char[20];
-	_comm.GetPos(newX, newY, newZ, newA);
+	error = _comm.GetPos(newX, newY, newZ, newA);
 	cout << "(" << newX << ", " << newY << ", " << newZ << ")\n" << flush;
 
 	// return if there was an error
@@ -240,11 +230,11 @@ int XYZ::step() {
 	}
 
 	// go to a vertical step at the end of a row 
-	if ((_dir == LEFT  && stod(newX) >= _startX && stod(newX) >= _endX)
-	 || (_dir == RIGHT && stod(newX) <= _startX && stod(newX) <= _endX))
+	if ((_dir == LEFT  && stod(newX) >= _startX && stod(newX) >= _endX)  // going to the left and position is left of start and end
+	 || (_dir == RIGHT && stod(newX) <= _startX && stod(newX) <= _endX)) // going to the right and position is right of start and end
 		_dir = _verticalStepDir;
 	
-	
+	// if the step was vertical...	
 	else if (_dir == _verticalStepDir) {
 		
 		// stop if the end is hit in the y direction
@@ -252,7 +242,7 @@ int XYZ::step() {
 		 || (_dir == DOWN && stod(newY) && stod(newY) <= _endY))
 			_dir = STOP;
 		
-		// after a vertical step, go back to horizontal
+		// otherwise, go back to horizontal
 		else if (stod(newX) >= _startX && stod(newX) >= _endX)
 			_dir = RIGHT;
 		else
@@ -265,7 +255,7 @@ int XYZ::step() {
 		cout << "failed to disable Joystick\n";
 		return -1;
 	}
-	
+
 	// delete stuff
 	delete newX;
 	delete newY;
@@ -274,6 +264,7 @@ int XYZ::step() {
 
 	return 0;
 }
+
 
 int XYZ::getPythonCmd(char* cmdBuf) {
 	
@@ -287,11 +278,13 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 		return -1;
 	}
 	
+	// add new position to command line args
 	strcat(cmdBuf, "python testandprogram.py COM15 ");
 	strcat(cmdBuf, newX);
 	strcat(cmdBuf, " ");
 	strcat(cmdBuf, newY);
 	
+	// delete stuff
 	delete newX;
 	delete newY;
 	delete newZ;
@@ -299,6 +292,7 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 
 	return 0;
 }
+
 
 bool XYZ::isDone() {
 	

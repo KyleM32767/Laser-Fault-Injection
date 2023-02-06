@@ -10,12 +10,14 @@
 
 #include "xyz.h"
 #include "pewpewpew.h"
-
 #include <windows.h>
 #include <iostream>
 #include <fstream>
 using namespace std;
 
+/*
+ * Main processing
+ */
 int main() {
 
 	// XYZ stages instance
@@ -33,12 +35,11 @@ int main() {
 		return -1;
 	}
 
-	// set start and end manually
+	// setup laser
 	if (laser_init() != 0) {
 		cout << "failed to setup laser\n" << flush;
 		return -1;
 	}
-
 
 	// wait a bit
 	Sleep(5000);
@@ -63,7 +64,7 @@ int main() {
 		system(pythonCmd);
 		delete pythonCmd;
 
-		// insert a newline
+		// insert a gap between teste
 		cout << "\n\n" << flush;
 
 		// take a step

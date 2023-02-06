@@ -1,11 +1,28 @@
 /*
  * xorTester.ino
  * 
- * tests the XOR gate on a Genesys2 FPGA for faults
- * 
  * Author: Kyle Mitard
  * Created 19 Jan 2023
+ * 
+ * Tests the XOR gate on a Genesys2 FPGA for faults. Input and output are on GPIO pins specified
+ * below, including an auxillary pin that is manually triggered, which is intended for a ring
+ * oscillator or clock input that is used with photon emission to locate the gate. 
+ * 
+ * Testing is triggered by sending an ASCII character over serial using either the Arduino serial
+ * monitor or some serial comms library (e.g. pySerial), and there are a few modes (see table below)
+ * 
+ * character | test mode         | sample output                                 | description
+ * ----------|-------------------|-----------------------------------------------|-------------------------------------------------------------------------------
+ * 'a'       | verbose test      | testing input 00001    expected 0    actual 0 | writes out all results for all inputs
+ * 'b'       | normal test       | ~~F~~~F~~~~F~~~~~~~~~~~~~~~~~~~~              | shows all in one line: '~' means no fault, 'F' means fault
+ * 'c'       | fault-type test   | ~~0~~~1~~~~1~~~~~~~~~~~~~~~~~~~~              | similar to normal test, but replaces 'F' with expected output for that test
+ * 'r'       | oscillator toggle | oscillator disabled/enabled                   | toggles on or off oscilator enable input
+ * 
  */
+
+
+// serial port baud rate
+#define BAUD_RATE 115200
 
 // number of XOR gate inputs
 #define N_INPUTS 5
@@ -63,10 +80,10 @@ void testXOR(unsigned int x, bool* expected, bool* actual) {
 
 
 /*
- * configures pins and 
+ * configures pins and serial bus - called on startup
  */
 void setup() {
-	Serial.begin(115200);
+	Serial.begin(BAUD_RATE);
 	for (int i = 0; i < N_INPUTS; i++) {
 		pinMode(INPUT_PINS[i], OUTPUT);
 	}
@@ -79,10 +96,11 @@ void setup() {
 
 
 /*
- * Does a thing upon receiving a byte over serial
+ * Does a thing upon receiving a byte over serial - interrupt routine triggered with every byte recieved over serial
  */
 void serialEvent() {
 
+	// read byte, and do something based on what it is
 	char rxByte = Serial.read();
 
 
@@ -113,6 +131,7 @@ void serialEvent() {
 			Serial.println();
 		}
 	
+
 	// initiate gate test with normal output - to be used in automation
 	} else if (rxByte == CMD_TEST_NORMAL) {
 		for (unsigned int i = 0; i < (1<<N_INPUTS); i++) {
@@ -135,6 +154,8 @@ void serialEvent() {
 		Serial.println();
 
 	
+	// initiate gate test which distinguishes fault type
+	// otherwise functionally identical to normal test
 	} else if (rxByte == CMD_TEST_FAULTTYPE) {
 		for (unsigned int i = 0; i < (1<<N_INPUTS); i++) {
 
@@ -157,6 +178,7 @@ void serialEvent() {
 		}
 		Serial.println();
 
+
 	// toggle ring oscillator or clock
 	} else if (rxByte == CMD_TOGGLE_OSC) {
 		oscEnabled ^= 1;
@@ -171,5 +193,8 @@ void serialEvent() {
 }
 
 
+/*
+ * Does nothing - loops indefinitely
+ */
 void loop() {
 }

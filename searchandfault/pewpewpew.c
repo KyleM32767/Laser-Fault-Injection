@@ -18,13 +18,20 @@
 // address of laser
 #define ADDR 1
 
-// laser settings
+// width of laser pulse, ps
 #define PULSE_WIDTH  200000 // ps
-#define PEAK_CURRENT 25     // percent of max (4A)
-#define FREQUENCY    100000 // Hz
-#define RUN_TIME     3000   // ms
 
-// the serial port for the laser
+// current of laser pulse, %
+// (100% = 4A)
+#define PEAK_CURRENT 25
+
+// frequency of pulses, Hz
+#define PULSE_FREQ   100000 // Hz
+
+// time to run the laser, ms
+#define RUN_TIME     3000
+
+// libserialport struct for the laser's serial port
 struct sp_port* p;
 
 
@@ -52,7 +59,7 @@ int laser_init() {
 		printf("error setting current\n");
 		return -1;
 	}
-	if (SetFrequency_PDMv5(p, ADDR, FREQUENCY) != 0) {
+	if (SetFrequency_PDMv5(p, ADDR, PULSE_FREQ) != 0) {
 		printf("error setting frequency\n");
 		return -1;
 	}
@@ -67,11 +74,13 @@ int laser_init() {
  */
 int pewpewpew() {
 
-	// turn on the laser
+	// set laser to on
 	if (SetLaserStatus_PDMv5(p, ADDR, 1) != 0) {
 		printf("error setting laser status\n");
 		return -1;
 	}
+
+	// apply changes to laser
 	if (ApplyRequest_PDMv5(p, ADDR) != 0) {
 		printf("error turning on laser\n");
 		return -1;
@@ -80,11 +89,13 @@ int pewpewpew() {
 	// wait a bit
 	Sleep(RUN_TIME);
 
-	// turn off the laser
+	// set laser to off
 	if (SetLaserStatus_PDMv5(p, ADDR, 0) != 0) {
 		printf("error setting laser status\n");
 		return -1;
 	}
+
+	// apply changes to laser
 	if (ApplyRequest_PDMv5(p, ADDR) != 0) {
 		printf("error turning off laser\n");
 		return -1;

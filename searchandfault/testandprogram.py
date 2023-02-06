@@ -14,6 +14,11 @@ import sys
 import cv2
 from PIL import ImageGrab
 
+
+# ======================================================================================================
+# CONSTANTS
+# ======================================================================================================
+
 # SSH hosts
 PI_HOST     = 'pi@fe80::ae16:eb8a:4dee:14df'
 VIVADO_HOST = 'dev@130.215.23.103'
@@ -35,6 +40,11 @@ COLOR_BOTH_FAULTS = (255, 255, 0) # yellow
 
 # fault spot opacity
 OPACITY = 0.3
+
+
+# ======================================================================================================
+# MAIN PROCESSING
+# ======================================================================================================
 
 # reference point for mapping motor position to image
 with open('result/refpoint.txt', 'r') as f:
@@ -79,27 +89,29 @@ if nFaults[0] == 0 and nFaults[1] == 0:
 else:
 
 	# report the faults
-	if (nFaults[0] == 0):
+	if nFaults[0] == 0:
 		color = COLOR_1_FAULT
 		print(nFaults[1], 'one-to-zero FAULTS! reprogramming FPGA...')
-	elif (nFaults[1] == 0):
+	elif nFaults[1] == 0:
 		print(nFaults[0], 'zero-to-one FAULTS! reprogramming FPGA...')
 		color = COLOR_0_FAULT
 	else:
 		print(nFaults[0], 'zero-to-one FAULTS and', nFaults[1], 'one-to-zero FAULTS! reprogramming FPGA...')
 		color = COLOR_BOTH_FAULTS
 
+	# do a double nested ssh to run vivado without connecting to the internet
+	# full path to vivado is needed due to path issues over ssh
+	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl')
+	print('done. verifying...')
 
 	# take a screenshot of lucie
 	ss_region = (0, 0, 1920, 1080)
 	ss_img = ImageGrab.grab(ss_region)
 	ss_img.save("result/xorFault" + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".png")
 
-
 	# determine image location using reference point
 	imgX = int((irlX - REF_X_IRL) * PIXEL_PER_MM + REF_X_IMG)
 	imgY = int((irlY - REF_Y_IRL) * PIXEL_PER_MM + REF_Y_IMG)
-
 
 	# edit the map image with a spot of the fault
 	map_img = cv2.imread(MAP_IMAGE_FILE)
@@ -107,13 +119,6 @@ else:
 	cv2.rectangle(overlay, (imgX-SPOT_SIZE//2,imgY-SPOT_SIZE//2), (imgX+SPOT_SIZE//2,imgY+SPOT_SIZE//2), color, -1)
 	n = cv2.addWeighted(overlay, OPACITY, map_img, 1-OPACITY, 0)
 	cv2.imwrite(MAP_IMAGE_FILE, n)
-
-
-	# do a double nested ssh to run vivado without connecting to the internet
-	# full path to vivado is needed due to path issues over ssh
-	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl')
-	print('done. verifying...')
-
 
 	# rerun test to see if it was reprogrammed successfully
 	tester.write(b'b')

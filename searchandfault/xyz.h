@@ -1,7 +1,7 @@
 /*
  * XYZ.h
  * 
- * Class to serve as an extra abtraction layer for XYZ stage functionality
+ * Header file for a class to serve as an extra abtraction layer for XYZ stage functionality
  * 
  * Author: Kyle Mitard
  * Created 30 Jan 2023
