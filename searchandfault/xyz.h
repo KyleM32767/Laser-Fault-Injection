@@ -81,11 +81,6 @@ public:
 
 private:
 
-	/*
-	 * Waits for the user to type any character
-	 */
-	void waitForinput();
-
 	// start coordinates
 	double _startX;
 	double _startY;

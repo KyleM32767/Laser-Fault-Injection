@@ -35,14 +35,6 @@ char ZERO[] = "0";
 char VELOCITY[]  = "0.05";
 
 
-void XYZ::waitForinput() {
-	char in = '\0';
-	while (in == '\0') {
-		cin >> in;
-	}
-}
-
-
 XYZ::XYZ() {
 	// attempt to initialize
 	if (_comm.InitController(CORVUS_CONTROLLER, N_AXES, XYZ_PORT,
@@ -128,8 +120,8 @@ int XYZ::setStartAndEnd() {
 	}
 
 	// at this point, move to the start position manually
-	cout << "press any key then enter when at start position\n" << flush;
-	waitForinput();
+	cout << "press any key when at start position\n" << flush;
+	system("pause >nul");
 
 	// attempt to get start position
 	char* x1 = new char[20];
@@ -144,8 +136,8 @@ int XYZ::setStartAndEnd() {
 	_startY = stod(y1);
 
 	// at this point, move to the end position manually
-	cout << "press any key then enter when at end position\n" << flush;
-	waitForinput();
+	cout << "press any key when at end position\n" << flush;
+	system("pause >nul");
 
 	// attempt to get start position
 	char* x2 = new char[20];
