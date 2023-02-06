@@ -31,6 +31,9 @@ char PLUS_ONE[] = "0.002";
 char MINUS_ONE[] = "-0.002";
 char ZERO[] = "0";
 
+// a low stage velocity to prevent vibrations from messing with things
+char VELOCITY[]  = "0.05";
+
 
 void XYZ::waitForinput() {
 	char in = '\0';
@@ -50,6 +53,11 @@ XYZ::XYZ() {
 	// attempt to open controller
 	if (_comm.OpenController() != STATE_OK) {
 		cout << "failed to open controller\n" << flush;
+	}
+
+	// set a low velocity
+	if (_comm.SetVelocity(VELOCITY) != 0) {
+		cout << "failed to set velocity\n" << flush;
 	}
 }
 
