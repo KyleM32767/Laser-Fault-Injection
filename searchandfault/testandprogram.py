@@ -26,7 +26,7 @@ MAP_IMAGE_FILE = "result/map.png"
 PIXEL_PER_MM = -1/0.000752571202531646
 
 # width of fault spot
-SPOT_SIZE = 6
+SPOT_SIZE = 4
 
 # fault spot colors
 COLOR_0_FAULT     = (255, 0,   0) # red
@@ -34,7 +34,7 @@ COLOR_1_FAULT     = (0,   255, 0) # green
 COLOR_BOTH_FAULTS = (255, 255, 0) # yellow 
 
 # fault spot opacity
-OPACITY = 1
+OPACITY = 0.3
 
 # reference point for mapping motor position to image
 with open('result/refpoint.txt', 'r') as f:
@@ -44,8 +44,8 @@ with open('result/refpoint.txt', 'r') as f:
 	REF_Y_IRL = float(f.readline())
 
 # IRL coordinates of current spot
-irlX = sys.argv[2]
-irlY = sys.argv[3]
+irlX = float(sys.argv[2])
+irlY = float(sys.argv[3])
 
 # open port for gate tester
 tester = serial.Serial(port=sys.argv[1], baudrate=115200, timeout=3)
@@ -97,14 +97,14 @@ else:
 
 
 	# determine image location using reference point
-	imgX = (irlX - REF_X_IRL) * PIXEL_PER_MM + REF_X_IMG
-	imgY = (irlY - REF_Y_IRL) * PIXEL_PER_MM + REF_Y_IMG
+	imgX = int((irlX - REF_X_IRL) * PIXEL_PER_MM + REF_X_IMG)
+	imgY = int((irlY - REF_Y_IRL) * PIXEL_PER_MM + REF_Y_IMG)
 
 
 	# edit the map image with a spot of the fault
 	map_img = cv2.imread(MAP_IMAGE_FILE)
 	overlay = map_img.copy()
-	cv2.rectangle(overlay, (imgX-SPOT_SIZE//2,imgY-SPOT_SIZE//2), (imgX+SPOT_SIZE//2,imgY+SPOT_SIZE//2), (255,0,0), -1)
+	cv2.rectangle(overlay, (imgX-SPOT_SIZE//2,imgY-SPOT_SIZE//2), (imgX+SPOT_SIZE//2,imgY+SPOT_SIZE//2), color, -1)
 	n = cv2.addWeighted(overlay, OPACITY, map_img, 1-OPACITY, 0)
 	cv2.imwrite(MAP_IMAGE_FILE, n)
 

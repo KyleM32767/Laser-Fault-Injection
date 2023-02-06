@@ -60,7 +60,7 @@ XYZ::XYZ() {
  * Return:
  *  - 0 if no error or -1 otherwise
  */
-int setRefPoint() {
+int XYZ::setRefPoint() {
 
 	// enable joystick
 	if (_comm.JoystickEnable() != STATE_OK) {
@@ -73,13 +73,13 @@ int setRefPoint() {
 	refPoint.open("result/refpoint.txt");
 
 	// instructions
-	char inBuf[30];
+	char* inBuf = new char[30];
 	cout << "First, a reference point must be set by following these steps..." << endl 
 		 << "\t1) Open LUCIE and take a picture of the area, and save it to result/map.png" << endl
 		 << "\t3) Using the joystick, aim the laser such that it is on top of a point that is easy to locate on the image" << endl
 		 << "\t3) Open MS paint and find the pixel location of where you aimed on the image you took in step 1" << endl
 		 << "\t4) Type the coordinates below" << endl
-		 << "after you are done typing the Y-coordinate, the position of the stages will be taken and written" << flush;
+		 << "after you are done typing the Y-coordinate, the position of the stages will be taken and written" << endl;
 	
 	// write image coordinates to reference file
 	cout << "x = " << flush;
@@ -177,6 +177,18 @@ int XYZ::setStartAndEnd() {
 		return -1;
 	}
 
+	// draw on map image
+	char cmdBuf[50] = "";
+	strcat(cmdBuf, "python drawBounds.py ");
+	strcat(cmdBuf, x1);
+	strcat(cmdBuf, " ");
+	strcat(cmdBuf, y1);
+	strcat(cmdBuf, " ");
+	strcat(cmdBuf, x2);
+	strcat(cmdBuf, " ");
+	strcat(cmdBuf, y2);
+	system(cmdBuf);
+
 	return 0;
 }
 
@@ -263,16 +275,6 @@ int XYZ::step() {
 	return 0;
 }
 
-
-bool XYZ::isDone() {
-	
-	if (_dir == STOP) 
-		_comm.JoystickEnable();
-	
-	return _dir == STOP;
-}
-
-
 int XYZ::getPythonCmd(char* cmdBuf) {
 	
 	// get new position
@@ -285,7 +287,7 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 		return -1;
 	}
 	
-	cmdBuf = "python testandprogram.py COM15 ";
+	strcat(cmdBuf, "python testandprogram.py COM15 ");
 	strcat(cmdBuf, newX);
 	strcat(cmdBuf, " ");
 	strcat(cmdBuf, newY);
@@ -297,3 +299,12 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 
 	return 0;
 }
+
+bool XYZ::isDone() {
+	
+	if (_dir == STOP) 
+		_comm.JoystickEnable();
+	
+	return _dir == STOP;
+}
+

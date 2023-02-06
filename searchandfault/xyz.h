@@ -60,15 +60,6 @@ public:
 
 
 	/*
-	 * returns true if at the end of the search 
-	 * 
-	 * Return:
-	 *   1 if at the end or 0 otherwise
-	 */
-	bool isDone();
-
-
-	/*
 	 * gets the command to call the python script based on the current position
 	 * 
 	 * Params:
@@ -78,6 +69,15 @@ public:
 	 *   0 if no error or -1 otherwise
 	 */
 	int getPythonCmd(char* cmdBuf);
+
+
+	/*
+	 * returns true if at the end of the search 
+	 * 
+	 * Return:
+	 *   1 if at the end or 0 otherwise
+	 */
+	bool isDone();
 
 private:
 

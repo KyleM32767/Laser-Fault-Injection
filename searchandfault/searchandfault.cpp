@@ -43,9 +43,6 @@ int main() {
 	// wait a bit
 	Sleep(5000);
 
-	// command used to invoke the python script
-	char pythonCmd[50];
-
 	// step through until done
 	while (!xyz.isDone()) {
 		
@@ -55,10 +52,16 @@ int main() {
 			return -1;
 		}
 
-		xyz.getPythonCmd(pythonCmd);
+		// command used to invoke the python script
+		char pythonCmd[50] = "";
+		if (xyz.getPythonCmd(pythonCmd) != 0) {
+			cout << "error invoking python script\n";
+			return -1;
+		}
 
 		// test the xor gate
 		system(pythonCmd);
+		delete pythonCmd;
 
 		// insert a newline
 		cout << "\n\n" << flush;
