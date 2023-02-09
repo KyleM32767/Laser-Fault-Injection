@@ -4,15 +4,17 @@
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## let ring oscillators happen
-set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets *]
+set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets *]
 
 ## place ring oscillator in bottom left
+set_property BEL C6LUT [get_cells b_inferred_i_1]
 set_property LOC SLICE_X0Y0 [get_cells b_inferred_i_1]
 set_property LOC SLICE_X1Y0 [get_cells b_inferred_i_2]
 set_property LOC SLICE_X2Y0 [get_cells b_inferred_i_3]
 set_property LOC SLICE_X3Y0 [get_cells b_inferred_i_4]
 set_property LOC SLICE_X4Y0 [get_cells b_inferred_i_5]
-set_property LOC SLICE_X5Y0 [get_cells b_inferred_i_6]
+set_property BEL A6LUT [get_cells b_inferred_i_6]
+set_property LOC SLICE_X5Y1 [get_cells b_inferred_i_6]
 set_property LOC SLICE_X6Y0 [get_cells b_inferred_i_7]
 set_property LOC SLICE_X7Y0 [get_cells b_inferred_i_8]
 set_property LOC SLICE_X8Y0 [get_cells b_inferred_i_9]
@@ -43,7 +45,7 @@ set_property LOC SLICE_X10Y0 [get_cells b_inferred_i_11]
 
 ## Switches
 #set_property -dict { PACKAGE_PIN G19   IOSTANDARD LVCMOS12 } [get_ports { sw[0] }]; #IO_0_17 Sch=sw[0]
-set_property -dict { PACKAGE_PIN G25   IOSTANDARD LVCMOS12 } [get_ports { en }]; #IO_25_16 Sch=sw[1]
+set_property -dict {PACKAGE_PIN G25 IOSTANDARD LVCMOS12} [get_ports en]
 #set_property -dict { PACKAGE_PIN H24   IOSTANDARD LVCMOS12 } [get_ports { sw[2] }]; #IO_L19P_T3_16 Sch=sw[2]
 #set_property -dict { PACKAGE_PIN K19   IOSTANDARD LVCMOS12 } [get_ports { sw[3] }]; #IO_L6P_T0_17 Sch=sw[3]
 #set_property -dict { PACKAGE_PIN N19   IOSTANDARD LVCMOS12 } [get_ports { sw[4] }]; #IO_L19P_T3_A22_15 Sch=sw[4]
@@ -159,7 +161,7 @@ set_property -dict { PACKAGE_PIN G25   IOSTANDARD LVCMOS12 } [get_ports { en }];
 #set_property -dict { PACKAGE_PIN AG17  IOSTANDARD LVCMOS18 } [get_ports { oled_vdd }]; #IO_L12N_T1_MRCC_32 Sch=oled_vdd
 
 ## PMOD Header JA
-set_property -dict { PACKAGE_PIN U27   IOSTANDARD LVCMOS33 } [get_ports { osc_out }]; #IO_L13P_T2_MRCC_14 Sch=ja_p[1]
+set_property -dict {PACKAGE_PIN U27 IOSTANDARD LVCMOS33} [get_ports osc_out]
 #set_property -dict { PACKAGE_PIN U28   IOSTANDARD LVCMOS33 } [get_ports { ja[1] }]; #IO_L13N_T2_MRCC_14 Sch=ja_n[1]
 #set_property -dict { PACKAGE_PIN T26   IOSTANDARD LVCMOS33 } [get_ports { ja[2] }]; #IO_L12P_T1_MRCC_14 Sch=ja_p[2]
 #set_property -dict { PACKAGE_PIN T27   IOSTANDARD LVCMOS33 } [get_ports { ja[3] }]; #IO_L12N_T1_MRCC_14 Sch=ja_n[2]
@@ -450,3 +452,5 @@ set_property -dict { PACKAGE_PIN U27   IOSTANDARD LVCMOS33 } [get_ports { osc_ou
 #set_property -dict { PACKAGE_PIN AB14  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_RESETB }]; #IO_25_VRP_32 Sch=usb_otg_resetb
 #set_property -dict { PACKAGE_PIN AA17  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_STP }]; #IO_L23P_T3_32 Sch=usb_otg_stp
 #set_property -dict { PACKAGE_PIN AF16  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_VBUSOC }]; #IO_L6N_T0_VREF_32 Sch=usb_otg_vbusoc
+
+
