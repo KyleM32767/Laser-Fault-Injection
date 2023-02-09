@@ -101,7 +101,7 @@ else:
 
 	# do a double nested ssh to run vivado without connecting to the internet
 	# full path to vivado is needed due to path issues over ssh
-	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl')
+	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl -tclargs /home/dev/kyle/xor_gate_noRO/xor_gate_noRO.runs/impl_1/xor_gate_noRO_top.bit')
 	print('done. verifying...')
 
 	# take a screenshot of lucie
