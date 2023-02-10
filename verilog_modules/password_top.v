@@ -12,12 +12,13 @@
  */
 
 module password_top (
-	input        sysclk_n,
+	input        sysclk_n, // system differential clock
 	input        sysclk_p,
 	input        btnc,     // center button: reset
-	input        btnd,     // down button: enter
-	input  [7:0] sw,
-	output [1:0] led
+	input  [6:0] pw,       // PMOD header A0-6: password input
+	input        enter,      // PMOD header B1: enter
+	output       open,      // PMOD header A7: open indicator
+	output       led       // LED 7: wrong indicator
 	);
 
 	wire clk;
@@ -36,10 +37,10 @@ module password_top (
 	pw_fsm pw0 (
 		.clk(clk),
 		.reset_n(lock),
-		.char_in(sw),
-		.enter(btnd),
-		.open(led[0]),
-		.wrong(led[1])
+		.char_in(pw),
+		.enter(enter),
+		.open(open),
+		.wrong(led)
 	);
 
 endmodule

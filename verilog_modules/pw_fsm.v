@@ -12,8 +12,8 @@
  */
 
 module pw_fsm #(
-	parameter PW_WIDTH = 8,     // size of a single password character in bits
-	parameter PASSWORD = 8'h48 // ascii "H"
+	parameter PW_WIDTH = 7,     // size of a single password character in bits
+	parameter PASSWORD = 7'h48 // ascii "H"
 )(
 	input               clk,     // clock input
 	input               reset_n, // synchronous active low reset
