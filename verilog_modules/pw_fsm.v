@@ -12,7 +12,7 @@
  */
 
 module pw_fsm #(
-	parameter PW_WIDTH = 8     // size of a single password character in bits
+	parameter PW_WIDTH = 8,     // size of a single password character in bits
 	parameter PASSWORD = 8'h48 // ascii "H"
 )(
 	input               clk,     // clock input
@@ -48,11 +48,11 @@ module pw_fsm #(
 		end
 
 		// synchronously set open if unlocked state, or closed otherwise
-		open <= (fsmState == STATE_UNLOCKED);
+		open <= (fsmState == STATE_UNLOCK);
 
 		// set wrong indicator during authentication based on next state
 		if (fsmState == STATE_AUTH) begin
-			wrong <= (nextState == STATE_LOCKED)
+			wrong <= (nextState == STATE_LOCKED);
 		end
 		
 		// reset wrong indicator if unlocked
@@ -72,7 +72,7 @@ module pw_fsm #(
 		end
 
 		else begin
-			case (currentState)
+			case (fsmState)
 				
 				// locked and idle: go to input wait if enter is pressed, 
 				STATE_LOCKED: begin

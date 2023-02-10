@@ -16,8 +16,8 @@ module password_top (
 	input        sysclk_p,
 	input        btnc,     // center button: reset
 	input        btnd,     // down button: enter
-	input  [7:0] ja,
-	output [2:0] led
+	input  [7:0] sw,
+	output [1:0] led
 	);
 
 	wire clk;
@@ -25,7 +25,7 @@ module password_top (
 
 	// clock wizard to generate FSM clock signal
 	clk_wiz_0 mmcm0(
-		.resetn(~btnc),
+		.reset(btnc),
 		.clk_in1_p(sysclk_p),
 		.clk_in1_n(sysclk_n),
 		.locked(lock),
@@ -36,7 +36,7 @@ module password_top (
 	pw_fsm pw0 (
 		.clk(clk),
 		.reset_n(lock),
-		.char_in(ja),
+		.char_in(sw),
 		.enter(btnd),
 		.open(led[0]),
 		.wrong(led[1])
