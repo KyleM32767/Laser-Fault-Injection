@@ -17,8 +17,7 @@ module password_top (
 	input        btnc,     // center button: reset
 	input  [6:0] pw,       // PMOD header A0-6: password input
 	input        enter,      // PMOD header B1: enter
-	output       open,      // PMOD header A7: open indicator
-	output       led       // LED 7: wrong indicator
+	output       open      // PMOD header A7: open indicator
 	);
 
 	wire clk;
@@ -39,8 +38,7 @@ module password_top (
 		.reset_n(lock),
 		.char_in(pw),
 		.enter(enter),
-		.open(open),
-		.wrong(led)
+		.open(open)
 	);
 
 endmodule

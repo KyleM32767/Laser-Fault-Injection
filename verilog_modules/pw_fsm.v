@@ -19,8 +19,7 @@ module pw_fsm #(
 	input               reset_n, // synchronous active low reset
 	input  [PW_WIDTH:0] char_in, // parallel input for password character
 	input               enter,   // enter character button
-	output reg          open,    // 1 if open
-	output reg          wrong    // 1 if incorrect password
+	output reg          open     // 1 if open
 	);
 
 	// labels for FSM states
@@ -43,22 +42,11 @@ module pw_fsm #(
 
 		// reset condition: turn off all indicators
 		if (~reset_n) begin
-			wrong <= 1'b0;
 			open <= 1'b0;
 		end
 
-		// synchronously set open if unlocked state, or closed otherwise
+		// synchronously set open if in unlocked state, or closed otherwise
 		open <= (fsmState == STATE_UNLOCK);
-
-		// set wrong indicator during authentication based on next state
-		if (fsmState == STATE_AUTH) begin
-			wrong <= (nextState == STATE_LOCKED);
-		end
-		
-		// reset wrong indicator if unlocked
-		else if (fsmState == STATE_UNLOCK) begin
-			wrong <= 1'b0;
-		end
 
 	end
 
