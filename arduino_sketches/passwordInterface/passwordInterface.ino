@@ -6,10 +6,11 @@
  * Author: Kyle Mitard
  * Created 10 Feb 2023
  */
-//#include "soc/rtc_wdt.h"
+// #include "soc/rtc_wdt.h"
+// #include "task_wdt.h"
 
 // serial port baud rate
-#define BAUD_RATE 115200
+#define BAUD_RATE 9600
 
 // number bits in password
 #define PW_WIDTH 7
@@ -21,27 +22,23 @@
 #define ENTER 19
 
 // // GPIO pin for incorrect password
-// #define WRONG 21
+#define WRONG 21
 
 // input pins to XOR gate (currently set up for an ESP32)
 const int PW_IN[PW_WIDTH] = {13, 12, 14, 27, 26, 25, 33};
 
-bool openFlag = 0;
+// 1 if lock is closed, 0 otherwise
+bool closed = 1;
+
+// flag for 
+bool lockFlag = 0;
 
 /*
- * ISR to report on status of door - interrupt routine triggered whenever open output changes
+ * ISR set lock flag - interrupt routine triggered whenever open output changes
  */
 void IRAM_ATTR ISR_open() {
-	openFlag = 1;
+	lockFlag = 1;
 }
-
-/*
- * ISR to shame you for wrong password - interrupt routine triggered on rising edge of wrong output
- */
-// void IRAM_ATTR ISR_wrong() {
-// 	if (digitalRead(WRONG) == HIGH)
-// 		Serial.println("wrong password, you knucklehead mcspazatron.");
-// }
 
 
 /*
@@ -62,13 +59,10 @@ void setup() {
 
 	// set open indicator as input with an interrupt
 	pinMode(OPEN, INPUT);
-	attachInterrupt(OPEN, ISR_open, CHANGE);
-
-	// set wrong indicator as input with an interrupt
-	// pinMode(WRONG, INPUT);
-	// attachInterrupt(WRONG, ISR_wrong, CHANGE);
+	attachInterrupt(OPEN, ISR_open, FALLING); // for some bizzare reason, using falling edge will make it panic all the time
 
 	Serial.println("enter password...");
+	// esp_int_wdt_delete();
 }
 
 
@@ -80,21 +74,35 @@ void serialEvent() {
 	// read byte
 	char rxByte = Serial.read();
 
-	Serial.println(rxByte, BIN);
+	// don't do anything if not closed
+	if (closed) {
 
-	// parallel write the byte
-	for (int i = 0; i < PW_WIDTH; i++) {
-		if (rxByte & 0x01)
-			digitalWrite(PW_IN[i], HIGH);
-		else
-			digitalWrite(PW_IN[i], LOW);
-		rxByte = rxByte >> 1;
+		Serial.print("Entered password ");
+
+		// parallel write the byte, while printing it
+		for (int i = PW_WIDTH-1; i >= 0; i--) {
+			Serial.print((rxByte >> i) & 1);
+			if (rxByte & (1 << i))
+				digitalWrite(PW_IN[i], HIGH);
+			else
+				digitalWrite(PW_IN[i], LOW);
+		}
+
+		Serial.print(" ... ");
+
+		// press enter
+		digitalWrite(ENTER, HIGH);
+		delay(2);
+		digitalWrite(ENTER, LOW);
+
+		// report access granted if it is open and was closed before
+		if (closed && digitalRead(OPEN) == HIGH) {
+			closed = 0;
+			Serial.println("access granted. welcome to downtown coolsville.");
+		// shame you for the wrong password if it is still closed
+		} else if (digitalRead(OPEN) == LOW)
+			Serial.println("wrong password, you knucklehead mcspazatron.");
 	}
-
-	// press enter
-	digitalWrite(ENTER, HIGH);
-	delay(2);
-	digitalWrite(ENTER, LOW);
 }
 
 
@@ -102,12 +110,8 @@ void serialEvent() {
  * Does nothing - loops indefinitely
  */
 void loop() {
-	if (openFlag) {
-		openFlag = 0;
-		// report new status of lock
-		if (digitalRead(OPEN) == HIGH)
-			Serial.println("access granted. welcome to downtown coolsville.");
-		else
-			Serial.println("locked");
+	if (lockFlag) {
+		lockFlag = 0;
+		Serial.println("locked");
 	}
 }
