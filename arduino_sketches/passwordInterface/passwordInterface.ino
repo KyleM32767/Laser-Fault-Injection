@@ -19,6 +19,17 @@
 // GPIO pin for enter input to FPGA
 #define ENTER 19
 
+// GPIO pin for reset input to FPGA
+#define RESET 5
+
+#define OSC_EN 2
+
+// byte to send for reset
+#define CMD_RESET '~'
+
+// byte to send to toggla ring oscillator
+#define CMD_TOGGLE_OSC 'r'
+
 // input pins to XOR gate (currently set up for an ESP32)
 const int PW_IN[PW_WIDTH] = {13, 12, 14, 27, 26, 25, 33};
 
@@ -30,6 +41,9 @@ bool lockFlag = 0;
 
 // flag for if the door was opened
 bool openFlag = 0;
+
+// 1 if oscillator is enabled, 0 otherwise 
+bool oscEnabled = 0;
 
 
 /*
@@ -63,6 +77,12 @@ void setup() {
 	pinMode(ENTER, OUTPUT);
 	digitalWrite(ENTER, LOW);
 
+	pinMode(RESET, OUTPUT);
+	digitalWrite(RESET, LOW);
+
+	pinMode(OSC_EN, OUTPUT);
+	digitalWrite(RESET, LOW);
+
 	// set open indicator as input with an interrupt
 	pinMode(OPEN, INPUT);
 	attachInterrupt(OPEN, ISR_open, CHANGE); // for some bizzare reason, using falling edge will make it panic all the time
@@ -82,6 +102,12 @@ void serialEvent() {
 	// read byte
 	char rxByte = Serial.read();
 
+	// reset if the signal is given
+	if (rxByte == CMD_RESET) {
+		digitalWrite(RESET, HIGH);
+		digitalWrite(RESET, LOW);
+	}
+
 	// don't do anything if not closed
 	if (closed) {
 
@@ -100,8 +126,19 @@ void serialEvent() {
 
 		// press enter
 		digitalWrite(ENTER, HIGH);
-		delay(2);
 		digitalWrite(ENTER, LOW);
+	}
+
+	// toggle ring oscillator
+	if (rxByte == CMD_TOGGLE_OSC) {
+		oscEnabled ^= 1;
+		if (oscEnabled) {
+			digitalWrite(OSC_EN, HIGH);
+			Serial.println("oscillator enabled");
+		} else {
+			digitalWrite(OSC_EN, LOW);
+			Serial.println("oscillator disabled");
+		}
 	}
 }
 
@@ -117,6 +154,7 @@ void loop() {
 	if (lockFlag) {
 		lockFlag = 0;
 		Serial.println("the coolsville gate has been locked");
+		closed = 1;
 	
 	// if the open flag is set, 
 	} else if (openFlag) {
