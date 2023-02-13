@@ -14,18 +14,23 @@
 module password_top (
 	input        sysclk_n, // system differential clock
 	input        sysclk_p,
-	input        btnc,     // center button: reset
+	input        reset,    // PMOD header B1: active high reset
 	input  [6:0] pw,       // PMOD header A0-6: password input
-	input        enter,      // PMOD header B1: enter
-	output       open      // PMOD header A7: open indicator
+	input        enter,    // PMOD header B0: enter
+	input        roEn,     // PMOD header B2: ring oscillator enable
+	output       open,     // PMOD header A7: open indicator
+	output       roOut     // PMOD header B3: ring oscillator output
 	);
 
+	// generated clock signal
 	wire clk;
+	
+	// locked output from clock gen, serving as reset for FSM
 	wire lock;
 
 	// clock wizard to generate FSM clock signal
 	clk_wiz_0 mmcm0(
-		.reset(btnc),
+		.reset(reset),
 		.clk_in1_p(sysclk_p),
 		.clk_in1_n(sysclk_n),
 		.locked(lock),
@@ -39,6 +44,14 @@ module password_top (
 		.char_in(pw),
 		.enter(enter),
 		.open(open)
+	);
+
+	// ring oscillator
+	ring_oscillator #(
+		.N_STAGES(7)
+	) osc0 (
+		.en(roEn),
+		.osc_out(roOut)
 	);
 
 endmodule
