@@ -434,3 +434,8 @@
 #set_property -dict { PACKAGE_PIN AB14  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_RESETB }]; #IO_25_VRP_32 Sch=usb_otg_resetb
 #set_property -dict { PACKAGE_PIN AA17  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_STP }]; #IO_L23P_T3_32 Sch=usb_otg_stp
 #set_property -dict { PACKAGE_PIN AF16  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_VBUSOC }]; #IO_L6N_T0_VREF_32 Sch=usb_otg_vbusoc
+
+set_property PROHIBIT true [get_sites SLICE_X0Y1]
+set_property PROHIBIT true [get_sites SLICE_X0Y0]
+set_property PROHIBIT true [get_sites SLICE_X1Y0]
+set_property PROHIBIT true [get_sites SLICE_X5Y0]
