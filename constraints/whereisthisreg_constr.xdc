@@ -3,7 +3,7 @@
 #### - uncomment the lines corresponding to used pins
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
-## let ring oscillator happen
+## let ring oscillators happen
 set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets osc0/*]
 
 ## Clock Signal
@@ -11,7 +11,7 @@ set_property -dict {PACKAGE_PIN AD11 IOSTANDARD LVDS} [get_ports sysclk_n]
 set_property -dict {PACKAGE_PIN AD12 IOSTANDARD LVDS} [get_ports sysclk_p]
 
 ## Buttons
-#set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS12} [get_ports btnc]
+#set_property -dict { PACKAGE_PIN E18   IOSTANDARD LVCMOS12 } [get_ports { btnc }]; #IO_25_17 Sch=btnc
 #set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS12 } [get_ports { btnd }]; #IO_0_15 Sch=btnd
 #set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS12 } [get_ports { btnl }]; #IO_L6P_T0_15 Sch=btnl
 #set_property -dict { PACKAGE_PIN C19   IOSTANDARD LVCMOS12 } [get_ports { btnr }]; #IO_L24P_T3_17 Sch=btnr
@@ -26,7 +26,7 @@ set_property -dict {PACKAGE_PIN AD12 IOSTANDARD LVDS} [get_ports sysclk_p]
 #set_property -dict { PACKAGE_PIN V20   IOSTANDARD LVCMOS33 } [get_ports { led[4] }]; #IO_L19N_T3_A09_D25_VREF_14 Sch=led[4]
 #set_property -dict { PACKAGE_PIN V26   IOSTANDARD LVCMOS33 } [get_ports { led[5] }]; #IO_L16P_T2_CSI_B_14 Sch=led[5]
 #set_property -dict { PACKAGE_PIN W24   IOSTANDARD LVCMOS33 } [get_ports { led[6] }]; #IO_L20N_T3_A07_D23_14 Sch=led[6]
-# set_property -dict {PACKAGE_PIN W23 IOSTANDARD LVCMOS33} [get_ports led]
+#set_property -dict { PACKAGE_PIN W23   IOSTANDARD LVCMOS33 } [get_ports { led[7] }]; #IO_L20P_T3_A08_D24_14 Sch=led[7]
 
 ## Switches
 #set_property -dict { PACKAGE_PIN G19   IOSTANDARD LVCMOS12 } [get_ports { sw[0] }]; #IO_0_17 Sch=sw[0]
@@ -146,29 +146,29 @@ set_property -dict {PACKAGE_PIN AD12 IOSTANDARD LVDS} [get_ports sysclk_p]
 #set_property -dict { PACKAGE_PIN AG17  IOSTANDARD LVCMOS18 } [get_ports { oled_vdd }]; #IO_L12N_T1_MRCC_32 Sch=oled_vdd
 
 ## PMOD Header JA
-set_property -dict {PACKAGE_PIN U27 IOSTANDARD LVCMOS33} [get_ports {pw[0]}]
-set_property -dict {PACKAGE_PIN U28 IOSTANDARD LVCMOS33} [get_ports {pw[1]}]
-set_property -dict {PACKAGE_PIN T26 IOSTANDARD LVCMOS33} [get_ports {pw[2]}]
-set_property -dict {PACKAGE_PIN T27 IOSTANDARD LVCMOS33} [get_ports {pw[3]}]
-set_property -dict {PACKAGE_PIN T22 IOSTANDARD LVCMOS33} [get_ports {pw[4]}]
-set_property -dict {PACKAGE_PIN T23 IOSTANDARD LVCMOS33} [get_ports {pw[5]}]
-set_property -dict {PACKAGE_PIN T20 IOSTANDARD LVCMOS33} [get_ports {pw[6]}]
-set_property -dict {PACKAGE_PIN T21 IOSTANDARD LVCMOS33} [get_ports open]
+#set_property -dict { PACKAGE_PIN U27   IOSTANDARD LVCMOS33 } [get_ports { ja[0] }]; #IO_L13P_T2_MRCC_14 Sch=ja_p[1]
+#set_property -dict { PACKAGE_PIN U28   IOSTANDARD LVCMOS33 } [get_ports { ja[1] }]; #IO_L13N_T2_MRCC_14 Sch=ja_n[1]
+#set_property -dict { PACKAGE_PIN T26   IOSTANDARD LVCMOS33 } [get_ports { ja[2] }]; #IO_L12P_T1_MRCC_14 Sch=ja_p[2]
+#set_property -dict { PACKAGE_PIN T27   IOSTANDARD LVCMOS33 } [get_ports { ja[3] }]; #IO_L12N_T1_MRCC_14 Sch=ja_n[2]
+#set_property -dict { PACKAGE_PIN T22   IOSTANDARD LVCMOS33 } [get_ports { ja[4] }]; #IO_L5P_T0_D06_14 Sch=ja_p[3]
+#set_property -dict { PACKAGE_PIN T23   IOSTANDARD LVCMOS33 } [get_ports { ja[5] }]; #IO_L5N_T0_D07_14 Sch=ja_n[3]
+#set_property -dict { PACKAGE_PIN T20   IOSTANDARD LVCMOS33 } [get_ports { ja[6] }]; #IO_L4P_T0_D04_14 Sch=ja_p[4]
+#set_property -dict { PACKAGE_PIN T21   IOSTANDARD LVCMOS33 } [get_ports { ja[7] }]; #IO_L4N_T0_D05_14 Sch=ja_n[4]
 
 ## PMOD Header JB
-set_property -dict {PACKAGE_PIN V29 IOSTANDARD LVCMOS33} [get_ports enter]
-set_property -dict {PACKAGE_PIN V30 IOSTANDARD LVCMOS33} [get_ports reset]
-set_property -dict {PACKAGE_PIN V25 IOSTANDARD LVCMOS33} [get_ports roEn]
-set_property -dict {PACKAGE_PIN W26 IOSTANDARD LVCMOS33} [get_ports roOut]
+#set_property -dict { PACKAGE_PIN V29   IOSTANDARD LVCMOS33 } [get_ports { jb[0] }]; #IO_L17P_T2_A14_D30_14 Sch=jb_p[1]
+set_property -dict {PACKAGE_PIN V30 IOSTANDARD LVCMOS33} [get_ports jb1]
+set_property -dict {PACKAGE_PIN V25 IOSTANDARD LVCMOS33} [get_ports jb2]
+set_property -dict {PACKAGE_PIN W26 IOSTANDARD LVCMOS33} [get_ports jb3]
 #set_property -dict { PACKAGE_PIN T25   IOSTANDARD LVCMOS33 } [get_ports { jb[4] }]; #IO_L14P_T2_SRCC_14 Sch=jb_p[3]
 #set_property -dict { PACKAGE_PIN U25   IOSTANDARD LVCMOS33 } [get_ports { jb[5] }]; #IO_L14N_T2_SRCC_14 Sch=jb_n[3]
 #set_property -dict { PACKAGE_PIN U22   IOSTANDARD LVCMOS33 } [get_ports { jb[6] }]; #IO_L21P_T3_DQS_14 Sch=jb_p[4]
 #set_property -dict { PACKAGE_PIN U23   IOSTANDARD LVCMOS33 } [get_ports { jb[7] }]; #IO_L21N_T3_DQS_A06_D22_14 Sch=jb_n[4]
 
 ## PMOD Header JC
-#set_property -dict { PACKAGE_PIN AC26  IOSTANDARD LVCMOS33 } [get_ports { jc[0] }]; #IO_L19P_T3_13 Sch=jc[1]
-#set_property -dict { PACKAGE_PIN AJ27  IOSTANDARD LVCMOS33 } [get_ports { jc[1] }]; #IO_L20P_T3_13 Sch=jc[2]
-#set_property -dict { PACKAGE_PIN AH30  IOSTANDARD LVCMOS33 } [get_ports { jc[2] }]; #IO_L18N_T2_13 Sch=jc[3]
+set_property -dict {PACKAGE_PIN AC26 IOSTANDARD LVCMOS33} [get_ports {jc[0]}]
+set_property -dict {PACKAGE_PIN AJ27 IOSTANDARD LVCMOS33} [get_ports {jc[1]}]
+set_property -dict {PACKAGE_PIN AH30 IOSTANDARD LVCMOS33} [get_ports {jc[2]}]
 #set_property -dict { PACKAGE_PIN AK29  IOSTANDARD LVCMOS33 } [get_ports { jc[3] }]; #IO_L15P_T2_DQS_13 Sch=jc[4]
 #set_property -dict { PACKAGE_PIN AD26  IOSTANDARD LVCMOS33 } [get_ports { jc[4] }]; #IO_L19N_T3_VREF_13 Sch=jc[7]
 #set_property -dict { PACKAGE_PIN AG30  IOSTANDARD LVCMOS33 } [get_ports { jc[5] }]; #IO_L18P_T2_13 Sch=jc[8]
@@ -441,39 +441,36 @@ set_property -dict {PACKAGE_PIN W26 IOSTANDARD LVCMOS33} [get_ports roOut]
 set_property PROHIBIT true [get_sites SLICE_X0Y1]
 set_property PROHIBIT true [get_sites SLICE_X0Y0]
 set_property PROHIBIT true [get_sites SLICE_X1Y0]
-
-
-
-
-set_property BEL CFF [get_cells pw0/open_reg]
-set_property LOC SLICE_X4Y0 [get_cells pw0/open_reg]
 set_property PROHIBIT true [get_sites SLICE_X5Y0]
 
-set_property BEL C6LUT [get_cells {pw0/FSM_sequential_fsmState[0]_i_1}]
-set_property BEL B6LUT [get_cells {pw0/FSM_sequential_fsmState[1]_i_1}]
-set_property BEL D6LUT [get_cells {pw0/FSM_sequential_fsmState[1]_i_2}]
-set_property BEL A6LUT [get_cells pw0/open_i_1]
 set_property BEL A6LUT [get_cells osc0/b_inferred_i_1]
-set_property LOC SLICE_X5Y1 [get_cells osc0/b_inferred_i_1]
-set_property BEL B6LUT [get_cells osc0/b_inferred_i_2]
-set_property LOC SLICE_X5Y1 [get_cells osc0/b_inferred_i_2]
-set_property BEL C6LUT [get_cells osc0/b_inferred_i_3]
-set_property LOC SLICE_X5Y1 [get_cells osc0/b_inferred_i_3]
-set_property BEL B6LUT [get_cells osc0/b_inferred_i_4]
-set_property LOC SLICE_X4Y1 [get_cells osc0/b_inferred_i_4]
-set_property BEL C6LUT [get_cells osc0/b_inferred_i_5]
-set_property LOC SLICE_X4Y1 [get_cells osc0/b_inferred_i_5]
-set_property BEL D6LUT [get_cells osc0/b_inferred_i_6]
-set_property LOC SLICE_X4Y1 [get_cells osc0/b_inferred_i_6]
-set_property BEL A6LUT [get_cells osc0/b_inferred_i_7]
-set_property LOC SLICE_X4Y1 [get_cells osc0/b_inferred_i_7]
+set_property LOC SLICE_X4Y2 [get_cells osc0/b_inferred_i_1]
+set_property BEL CFF [get_cells {genblk1[0].jc_reg[0]}]
+set_property LOC SLICE_X4Y0 [get_cells {genblk1[0].jc_reg[0]}]
 
-set_property BEL AFF [get_cells {pw0/FSM_sequential_fsmState_reg[1]}]
-set_property LOC SLICE_X4Y0 [get_cells {pw0/FSM_sequential_fsmState_reg[1]}]
-set_property BEL A5FF [get_cells {pw0/FSM_sequential_fsmState_reg[0]}]
-set_property LOC SLICE_X4Y0 [get_cells {pw0/FSM_sequential_fsmState_reg[0]}]
+set_property BEL A5FF [get_cells {genblk1[1].jc_reg[1]}]
+set_property LOC SLICE_X4Y0 [get_cells {genblk1[1].jc_reg[1]}]
+set_property BEL AFF [get_cells {genblk1[2].jc_reg[2]}]
+set_property LOC SLICE_X4Y0 [get_cells {genblk1[2].jc_reg[2]}]
 
-set_property LOC SLICE_X4Y0 [get_cells {pw0/FSM_sequential_fsmState[0]_i_1}]
-set_property LOC SLICE_X4Y0 [get_cells {pw0/FSM_sequential_fsmState[1]_i_1}]
-set_property LOC SLICE_X4Y0 [get_cells {pw0/FSM_sequential_fsmState[1]_i_2}]
-set_property LOC SLICE_X4Y0 [get_cells pw0/open_i_1]
+
+set_property BEL A6LUT [get_cells osc0/b_inferred_i_10]
+set_property LOC SLICE_X3Y2 [get_cells osc0/b_inferred_i_10]
+set_property BEL B6LUT [get_cells osc0/b_inferred_i_11]
+set_property LOC SLICE_X3Y2 [get_cells osc0/b_inferred_i_11]
+set_property BEL C6LUT [get_cells osc0/b_inferred_i_2]
+set_property LOC SLICE_X3Y2 [get_cells osc0/b_inferred_i_2]
+set_property BEL D6LUT [get_cells osc0/b_inferred_i_3]
+set_property LOC SLICE_X3Y2 [get_cells osc0/b_inferred_i_3]
+set_property BEL A5LUT [get_cells osc0/b_inferred_i_4]
+set_property LOC SLICE_X3Y3 [get_cells osc0/b_inferred_i_4]
+set_property BEL B5LUT [get_cells osc0/b_inferred_i_5]
+set_property LOC SLICE_X3Y3 [get_cells osc0/b_inferred_i_5]
+set_property BEL C5LUT [get_cells osc0/b_inferred_i_6]
+set_property LOC SLICE_X3Y3 [get_cells osc0/b_inferred_i_6]
+set_property BEL B6LUT [get_cells osc0/b_inferred_i_7]
+set_property LOC SLICE_X4Y2 [get_cells osc0/b_inferred_i_7]
+set_property BEL C6LUT [get_cells osc0/b_inferred_i_8]
+set_property LOC SLICE_X4Y2 [get_cells osc0/b_inferred_i_8]
+set_property BEL D6LUT [get_cells osc0/b_inferred_i_9]
+set_property LOC SLICE_X4Y2 [get_cells osc0/b_inferred_i_9]
