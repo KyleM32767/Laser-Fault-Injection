@@ -1,3 +1,14 @@
+/*
+ * whereisthisreg_top.v
+ * 
+ * an array of registers fed by a ring oscillator to determine where is this register?
+ * 
+ * Author: Kyle Mitard
+ * Created 14 Feb 2023
+ * 
+ * NOTE: you must use the keep_equivalent_regiters option, or else the registers will combine to one!!
+ */
+
 module whereisthisreg_top #(
 	parameter N_REGS     = 3, // number of registers to locate
 	parameter OSC_STAGES = 11 // number of ring oscillator stages
