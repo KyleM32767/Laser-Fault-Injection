@@ -5,6 +5,11 @@
  * 
  * Author: Kyle Mitard
  * Created 16 Feb 2023
+ * 
+ * Every DFF output has an interrupt, which flips a bit to 1 in EEPROM. These
+ * bits can then be read and reset using the serial interface. The EEPROM is
+ * needed because a reset happens every time the serial port is opened, and
+ * the EEPROM allows the values to be preserved between resets 
  */
 
 #include <EEPROM.h>
@@ -27,11 +32,12 @@
 // output pins from each flip flop (currently set up for an ESP32)
 const int FF_OUT[N_FF] = {13, 12, 14, 27, 26, 25, 33, 32};
 
+
 /*
  * flips a bit in the EEPROM value that indicates whether a bit flipped
  * 
  * Params:
- *  n = bit to flip
+ *  n = bit to set 1
  */
 void IRAM_ATTR flipBit(int n) {
 	EEPROM.write(EEPROM_ADDR, EEPROM.read(EEPROM_ADDR) | (1 << n));
@@ -51,7 +57,12 @@ void IRAM_ATTR ISR_pin5() { flipBit(5); }
 void IRAM_ATTR ISR_pin6() { flipBit(6); }
 void IRAM_ATTR ISR_pin7() { flipBit(7); }
 
+
+/*
+ * Array of ISR pointers
+ */
 void (*ISR[N_FF])() = {ISR_pin0, ISR_pin1, ISR_pin2, ISR_pin3, ISR_pin4, ISR_pin5, ISR_pin6, ISR_pin7};
+
 
 /*
  * configures pins and serial bus
@@ -90,7 +101,11 @@ void serialEvent() {
 		EEPROM.commit();
 		Serial.println("reset");
 	} else if (rxByte == CMD_READ) {
-		Serial.println(EEPROM.read(EEPROM_ADDR), BIN);
+		char b = EEPROM.read(EEPROM_ADDR);
+		for (int i = 0; i < N_FF; i++) {
+			Serial.print(b & 1);
+			b = b >> 1;
+		}
 	}
 }
 
