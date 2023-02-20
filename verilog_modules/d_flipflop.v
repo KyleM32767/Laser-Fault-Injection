@@ -10,17 +10,31 @@
  */
 
 module d_flipflop #(
-	parameter N = 1
+	parameter N = 8
 ) (
-	input              reset, // synchronous active-high reset
-	input              clk,   // clock signal
-	input      [N-1:0] d,     // input
-	output reg [N-1:0] q      // output
+	input              sysclk_p, // clock signal
+	input              sysclk_n,
+	input              reset,    // synchronous active-high reset
+	input              en,       // active-high enable
+	input      [N-1:0] d,        // input
+	output reg [N-1:0] q         // output
 	);
 
-	// latch on rising edge
+	wire clk;
+
+	// clock wizard to generate 100 MHz clock signal
+	clk_wiz_0 mmcm0(
+		.reset(reset),
+		.clk_in1_p(sysclk_p),
+		.clk_in1_n(sysclk_n),
+		.clk_out1(clk)
+	);
+
 	always @(posedge clk) begin 
-		q <= reset ? 1'b0 : d;
+		if (en) begin
+			q <= reset ? 1'b0 : d;
+		end
 	end
+	
 
 endmodule

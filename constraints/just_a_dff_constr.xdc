@@ -4,12 +4,12 @@
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## Clock Signal
-#set_property -dict { PACKAGE_PIN AD11  IOSTANDARD LVDS     } [get_ports { sysclk_n }]; #IO_L12N_T1_MRCC_33 Sch=sysclk_n
-#set_property -dict { PACKAGE_PIN AD12  IOSTANDARD LVDS     } [get_ports { sysclk_p }]; #IO_L12P_T1_MRCC_33 Sch=sysclk_p
+set_property -dict {PACKAGE_PIN AD11 IOSTANDARD LVDS} [get_ports sysclk_n]
+set_property -dict {PACKAGE_PIN AD12 IOSTANDARD LVDS} [get_ports sysclk_p]
 
 ## Buttons
 set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS12} [get_ports reset]
-#set_property -dict { PACKAGE_PIN M19   IOSTANDARD LVCMOS12 } [get_ports { btnd }]; #IO_0_15 Sch=btnd
+set_property -dict {PACKAGE_PIN M19 IOSTANDARD LVCMOS12} [get_ports en]
 #set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS12 } [get_ports { btnl }]; #IO_L6P_T0_15 Sch=btnl
 #set_property -dict { PACKAGE_PIN C19   IOSTANDARD LVCMOS12 } [get_ports { btnr }]; #IO_L24P_T3_17 Sch=btnr
 #set_property -dict { PACKAGE_PIN B19   IOSTANDARD LVCMOS12 } [get_ports { btnu }]; #IO_L24N_T3_17 Sch=btnu
@@ -26,14 +26,14 @@ set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS12} [get_ports reset]
 #set_property -dict { PACKAGE_PIN W23   IOSTANDARD LVCMOS33 } [get_ports { led[7] }]; #IO_L20P_T3_A08_D24_14 Sch=led[7]
 
 ## Switches
-#set_property -dict { PACKAGE_PIN G19   IOSTANDARD LVCMOS12 } [get_ports { sw[0] }]; #IO_0_17 Sch=sw[0]
-#set_property -dict { PACKAGE_PIN G25   IOSTANDARD LVCMOS12 } [get_ports { sw[1] }]; #IO_25_16 Sch=sw[1]
-#set_property -dict { PACKAGE_PIN H24   IOSTANDARD LVCMOS12 } [get_ports { sw[2] }]; #IO_L19P_T3_16 Sch=sw[2]
-#set_property -dict { PACKAGE_PIN K19   IOSTANDARD LVCMOS12 } [get_ports { sw[3] }]; #IO_L6P_T0_17 Sch=sw[3]
-#set_property -dict { PACKAGE_PIN N19   IOSTANDARD LVCMOS12 } [get_ports { sw[4] }]; #IO_L19P_T3_A22_15 Sch=sw[4]
-#set_property -dict { PACKAGE_PIN P19   IOSTANDARD LVCMOS12 } [get_ports { sw[5] }]; #IO_25_15 Sch=sw[5]
-#set_property -dict { PACKAGE_PIN P26   IOSTANDARD LVCMOS33 } [get_ports { sw[6] }]; #IO_L10P_T1_D14_14 Sch=sw[6]
-#set_property -dict { PACKAGE_PIN P27   IOSTANDARD LVCMOS33 } [get_ports { sw[7] }]; #IO_L8P_T1_D11_14 Sch=sw[7]
+set_property -dict {PACKAGE_PIN G19 IOSTANDARD LVCMOS12} [get_ports {d[0]}]
+set_property -dict {PACKAGE_PIN G25 IOSTANDARD LVCMOS12} [get_ports {d[1]}]
+set_property -dict {PACKAGE_PIN H24 IOSTANDARD LVCMOS12} [get_ports {d[2]}]
+set_property -dict {PACKAGE_PIN K19 IOSTANDARD LVCMOS12} [get_ports {d[3]}]
+set_property -dict {PACKAGE_PIN N19 IOSTANDARD LVCMOS12} [get_ports {d[4]}]
+set_property -dict {PACKAGE_PIN P19 IOSTANDARD LVCMOS12} [get_ports {d[5]}]
+set_property -dict {PACKAGE_PIN P26 IOSTANDARD LVCMOS33} [get_ports {d[6]}]
+set_property -dict {PACKAGE_PIN P27 IOSTANDARD LVCMOS33} [get_ports {d[7]}]
 
 ## USB HIDs For Both Mouse and Keyboard
 #set_property -dict { PACKAGE_PIN AD23  IOSTANDARD LVCMOS33  PULLUP true } [get_ports { ps2_clk_0 }]; #IO_L12P_T1_MRCC_12 Sch=ps2_clk[0]
@@ -143,14 +143,14 @@ set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS12} [get_ports reset]
 #set_property -dict { PACKAGE_PIN AG17  IOSTANDARD LVCMOS18 } [get_ports { oled_vdd }]; #IO_L12N_T1_MRCC_32 Sch=oled_vdd
 
 ## PMOD Header JA
-set_property -dict {PACKAGE_PIN U27 IOSTANDARD LVCMOS33} [get_ports clk]
-set_property -dict {PACKAGE_PIN U28 IOSTANDARD LVCMOS33} [get_ports d]
-set_property -dict {PACKAGE_PIN T26 IOSTANDARD LVCMOS33} [get_ports q]
-#set_property -dict { PACKAGE_PIN T27   IOSTANDARD LVCMOS33 } [get_ports { ja[3] }]; #IO_L12N_T1_MRCC_14 Sch=ja_n[2]
-#set_property -dict { PACKAGE_PIN T22   IOSTANDARD LVCMOS33 } [get_ports { ja[4] }]; #IO_L5P_T0_D06_14 Sch=ja_p[3]
-#set_property -dict { PACKAGE_PIN T23   IOSTANDARD LVCMOS33 } [get_ports { ja[5] }]; #IO_L5N_T0_D07_14 Sch=ja_n[3]
-#set_property -dict { PACKAGE_PIN T20   IOSTANDARD LVCMOS33 } [get_ports { ja[6] }]; #IO_L4P_T0_D04_14 Sch=ja_p[4]
-#set_property -dict { PACKAGE_PIN T21   IOSTANDARD LVCMOS33 } [get_ports { ja[7] }]; #IO_L4N_T0_D05_14 Sch=ja_n[4]
+set_property -dict {PACKAGE_PIN U27 IOSTANDARD LVCMOS33} [get_ports {q[0]}]
+set_property -dict {PACKAGE_PIN U28 IOSTANDARD LVCMOS33} [get_ports {q[1]}]
+set_property -dict {PACKAGE_PIN T26 IOSTANDARD LVCMOS33} [get_ports {q[2]}]
+set_property -dict {PACKAGE_PIN T27 IOSTANDARD LVCMOS33} [get_ports {q[3]}]
+set_property -dict {PACKAGE_PIN T22 IOSTANDARD LVCMOS33} [get_ports {q[4]}]
+set_property -dict {PACKAGE_PIN T23 IOSTANDARD LVCMOS33} [get_ports {q[5]}]
+set_property -dict {PACKAGE_PIN T20 IOSTANDARD LVCMOS33} [get_ports {q[6]}]
+set_property -dict {PACKAGE_PIN T21 IOSTANDARD LVCMOS33} [get_ports {q[7]}]
 
 ## PMOD Header JB
 #set_property -dict { PACKAGE_PIN V29   IOSTANDARD LVCMOS33 } [get_ports { jb[0] }]; #IO_L17P_T2_A14_D30_14 Sch=jb_p[1]
@@ -440,5 +440,20 @@ set_property PROHIBIT true [get_sites SLICE_X0Y0]
 set_property PROHIBIT true [get_sites SLICE_X1Y0]
 set_property PROHIBIT true [get_sites SLICE_X5Y0]
 
-set_property BEL CFF [get_cells {q_reg[0]}]
-set_property LOC SLICE_X4Y0 [get_cells {q_reg[0]}]
+
+set_property BEL BFF [get_cells {q_reg[5]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[5]}]
+set_property BEL CFF [get_cells {q_reg[2]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[2]}]
+set_property BEL B5FF [get_cells {q_reg[3]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[3]}]
+set_property BEL C5FF [get_cells {q_reg[4]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[4]}]
+set_property BEL DFF [get_cells {q_reg[6]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[6]}]
+set_property BEL A5FF [get_cells {q_reg[1]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[1]}]
+set_property BEL D5FF [get_cells {q_reg[0]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[0]}]
+set_property BEL AFF [get_cells {q_reg[7]}]
+set_property LOC SLICE_X6Y0 [get_cells {q_reg[7]}]
