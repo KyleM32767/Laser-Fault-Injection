@@ -12,6 +12,11 @@
 #include <fstream>
 using namespace std;
 
+// base command for the python script
+// uncomment the relevant one
+// #define PYTHON_CMD_BASE "python python_scripts/testandprogram.py COM15 "
+#define PYTHON_CMD_BASE "python python_scripts/getFlippedRegs.py COM15 "
+
 // serial port for XYZ stage
 #define XYZ_PORT (DWORD) 9
 
@@ -167,7 +172,7 @@ int XYZ::setStartAndEnd() {
 
 	// draw bounds on map image
 	char cmdBuf[50] = "";
-	strcat(cmdBuf, "python drawBounds.py ");
+	strcat(cmdBuf, "python python_scripts/drawBounds.py ");
 	strcat(cmdBuf, x1);
 	strcat(cmdBuf, " ");
 	strcat(cmdBuf, y1);
@@ -279,7 +284,7 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 	}
 	
 	// add new position to command line args
-	strcat(cmdBuf, "python testandprogram.py COM15 ");
+	strcat(cmdBuf, PYTHON_CMD_BASE);
 	strcat(cmdBuf, newX);
 	strcat(cmdBuf, " ");
 	strcat(cmdBuf, newY);

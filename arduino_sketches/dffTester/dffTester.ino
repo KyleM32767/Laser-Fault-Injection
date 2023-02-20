@@ -106,6 +106,7 @@ void serialEvent() {
 			Serial.print(b & 1);
 			b = b >> 1;
 		}
+		Serial.println();
 	}
 }
 
