@@ -10,7 +10,7 @@
  */
 
 module whereisthisreg_top #(
-	parameter N_REGS     = 3, // number of registers to locate
+	parameter N_REGS     = 8, // number of registers to locate
 	parameter OSC_STAGES = 11 // number of ring oscillator stages
 )(
 	input                   sysclk_n, // system differential clock
