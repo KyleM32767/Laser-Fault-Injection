@@ -23,7 +23,7 @@
 
 // current of laser pulse, %
 // (100% = 4A)
-#define PEAK_CURRENT 25
+#define PEAK_CURRENT 35
 
 // frequency of pulses, Hz
 #define PULSE_FREQ   100000 // Hz

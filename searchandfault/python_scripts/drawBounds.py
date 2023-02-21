@@ -13,9 +13,10 @@ from sys import argv
 # file onto which the fault sensitivity map is drawn
 MAP_IMAGE_FILE = "result/map.png"
 
-# pixel to irl size conversion
+# pixel to irl size conversion - uncomment the one for whatever lens was used for the map imahe
 # there is a minus sign because the left/up is positive IRL, but negative in image
-PIXEL_PER_MM = -1/0.000752571202531646
+# PIXEL_PER_MM = -1/0.000752571202531646 # 20X
+PIXEL_PER_MM = -3326.315789473684      # 50X
 
 # reference point for mapping laser position to image
 with open('result/refpoint.txt', 'r') as f:

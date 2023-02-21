@@ -74,11 +74,11 @@ fault = -1
 for i in range(0, len(result) - 2):
 
 	# record a fault if found
-	if result[i] == ord('0'):
+	if result[i] == ord('1'):
 		fault = i
 
 	# there are no other possible characters for faults
-	elif result[i] != ord('1'):
+	elif result[i] != ord('0'):
 		print('error in result')
 		exit()
 
@@ -94,7 +94,7 @@ else:
 	# take a screenshot of lucie
 	ss_region = (0, 0, 1920, 1080)
 	ss_img = ImageGrab.grab(ss_region)
-	ss_img.save("result/flippedReg" +  + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".png")
+	ss_img.save("result/flippedReg" + str(fault) + time.strftime("%Y%m%d%H%M%S", time.gmtime()) + ".png")
 
 	# determine image location using reference point
 	imgX = int((irlX - REF_X_IRL) * PIXEL_PER_MM + REF_X_IMG)
@@ -103,14 +103,14 @@ else:
 	# edit the map image with a spot of the fault
 	map_img = cv2.imread(MAP_IMAGE_FILE)
 	overlay = map_img.copy()
-	cv2.rectangle(overlay, (imgX-SPOT_SIZE//2,imgY-SPOT_SIZE//2), (imgX+SPOT_SIZE//2,imgY+SPOT_SIZE//2), color, -1)
+	cv2.rectangle(overlay, (imgX-SPOT_SIZE//2,imgY-SPOT_SIZE//2), (imgX+SPOT_SIZE//2,imgY+SPOT_SIZE//2), colors[fault], -1)
 	n = cv2.addWeighted(overlay, OPACITY, map_img, 1-OPACITY, 0)
 	cv2.imwrite(MAP_IMAGE_FILE, n)
 
 	# reset and verify that it was reset
 	tester.write(b'~')
 	result = tester.readline()
-	if result == "reset":
+	if result == b'reset\r\n':
 		print('reset success.')
 	else:
 		print("reset failed...")
