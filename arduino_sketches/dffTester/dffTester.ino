@@ -21,7 +21,8 @@
 #define N_FF 8
 
 // byte to send over serial to trigger a read
-#define CMD_READ 'r'
+#define CMD_READ 'a'
+
 
 // byte to send over serial to reset EEPROM register
 #define CMD_RESET '~'
