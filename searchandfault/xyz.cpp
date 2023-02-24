@@ -8,6 +8,7 @@
  */
 
 #include "xyz.h"
+#include "Wp2CommDllLoader.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -26,6 +27,17 @@ using namespace std;
 #define BAUD_RATE         (DWORD) 57600
 #define MODE_SYNCHRONOUS  (DWORD) 1050884
 
+/*
+ * enumerated type for the current direction of the XYZ stages
+ */
+typedef enum {
+	LEFT,  // xstep of +1
+	RIGHT, // xstep of -1
+	UP,    // ystep of +1
+	DOWN,  // ystep of -1
+	STOP   // stopped
+} XYZDirection;
+
 // values to be passed into moveRelative() for various step directions
 char PLUS_ONE[] = "0.002";
 char MINUS_ONE[] = "-0.002";
@@ -34,8 +46,28 @@ char ZERO[] = "0";
 // a low stage velocity to prevent vibrations from messing with things
 char VELOCITY[]  = "0.05";
 
+// start coordinates
+double _startX;
+double _startY;
 
-XYZ::XYZ() {
+// end coordinates
+double _endX;
+double _endY;
+
+// z stays the same
+char* _z;
+
+// current direction of movement
+XYZDirection _dir;
+
+// direction to take when the end is reached
+XYZDirection _verticalStepDir;
+
+// instance of DLL Loader
+Wp2CommDllLoader _comm;
+
+
+void XYZ_init() {
 	// attempt to initialize
 	if (_comm.InitController(CORVUS_CONTROLLER, N_AXES, XYZ_PORT,
 	                        BAUD_RATE, 0, 0, MODE_SYNCHRONOUS) != STATE_OK) {
@@ -51,10 +83,17 @@ XYZ::XYZ() {
 	if (_comm.SetVelocity(VELOCITY) != 0) {
 		cout << "failed to set velocity\n" << flush;
 	}
+
+
+	_startX = 0.0;
+	_startY = 0.0;
+	_endX = 0.0;
+	_endY = 0.0;
+	_z = new char[20];
 }
 
 
-int XYZ::setRefPoint() {
+int XYZ_setRefPoint() {
 
 	// enable joystick
 	if (_comm.JoystickEnable() != STATE_OK) {
@@ -105,7 +144,7 @@ int XYZ::setRefPoint() {
 }
 
 
-int XYZ::setStartAndEnd() {
+int XYZ_setStartAndEnd() {
 
 	// enable joystick
 	if (_comm.JoystickEnable() != STATE_OK) {
@@ -186,7 +225,7 @@ int XYZ::setStartAndEnd() {
 }
 
 
-int XYZ::step() {
+int XYZ_step() {
 
 	// error code returned by wp2comm
 	int error;
@@ -271,7 +310,7 @@ int XYZ::step() {
 }
 
 
-int XYZ::getPythonCmd(char* cmdBuf) {
+int XYZ_getPythonCmd(char* cmdBuf) {
 	
 	// get new position
 	char* newX = new char[20];
@@ -299,7 +338,7 @@ int XYZ::getPythonCmd(char* cmdBuf) {
 }
 
 
-bool XYZ::isDone() {
+bool XYZ_isDone() {
 	
 	if (_dir == STOP) 
 		_comm.JoystickEnable();

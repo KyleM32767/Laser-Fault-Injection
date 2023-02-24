@@ -21,16 +21,16 @@ using namespace std;
 int main() {
 
 	// XYZ stages instance
-	XYZ xyz;
+	XYZ_init();
 
 	// set reference point manually
-	if (xyz.setRefPoint() != 0) {
+	if (XYZ_setRefPoint() != 0) {
 		cout << "failed to set ref point\n" << flush;
 		return -1;
 	}
 
 	// set start and end manually
-	if (xyz.setStartAndEnd() != 0) {
+	if (XYZ_setStartAndEnd() != 0) {
 		cout << "failed to set start and end\n" << flush;
 		return -1;
 	}
@@ -42,10 +42,10 @@ int main() {
 	}
 
 	// wait a bit
-	Sleep(5000);
+	Sleep(1000);
 
 	// step through until done
-	while (!xyz.isDone()) {
+	while (!XYZ_isDone()) {
 		
 		// fire the laser
 		if (pewpewpew() != 0) {
@@ -55,7 +55,7 @@ int main() {
 
 		// command used to invoke the python script
 		char pythonCmd[50] = "";
-		if (xyz.getPythonCmd(pythonCmd) != 0) {
+		if (XYZ_getPythonCmd(pythonCmd) != 0) {
 			cout << "error invoking python script\n";
 			return -1;
 		}
@@ -68,13 +68,13 @@ int main() {
 		cout << "\n\n" << flush;
 
 		// take a step
-		if (xyz.step() != 0) {
+		if (XYZ_step() != 0) {
 			cout << "Error taking step\n" << flush;
 			return -1;
 		}
 
 		// wait a bit
-		Sleep(1000);
+		Sleep(300);
 	}
 
 	return 0;
