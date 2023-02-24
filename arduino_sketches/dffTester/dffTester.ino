@@ -23,16 +23,23 @@
 // byte to send over serial to trigger a read
 #define CMD_READ 'a'
 
-
 // byte to send over serial to reset EEPROM register
 #define CMD_RESET '~'
+
+// byte to send to toggla ring oscillator
+#define CMD_TOGGLE_OSC 'r'
 
 // EEPROM address to write to
 #define EEPROM_ADDR 0
 
+// GPIO pin for ring oscillator enable
+#define OSC_EN 2
+
 // output pins from each flip flop (currently set up for an ESP32)
 const int FF_OUT[N_FF] = {13, 12, 14, 27, 26, 25, 33, 32};
 
+// 1 if oscillator is enabled, 0 otherwise 
+bool oscEnabled = 0;
 
 /*
  * flips a bit in the EEPROM value that indicates whether a bit flipped
@@ -75,8 +82,11 @@ void setup() {
 	// start serial
 	Serial.begin(BAUD_RATE);
 
+	// set oscillator enable as input
+	pinMode(OSC_EN, OUTPUT);
+	digitalWrite(OSC_EN, LOW);
 
-	// set each flip flop output as input
+	// set each flip flop output as input with interrupt
 	for (int i = 0; i < N_FF; i++) {
 		pinMode(FF_OUT[i], INPUT);
 		attachInterrupt(FF_OUT[i], ISR[i], CHANGE);
@@ -93,14 +103,16 @@ void setup() {
  */
 void serialEvent() {
 
-	// read byte
+	// read byte and do a thing depending on byte
 	char rxByte = Serial.read();
 
-	// reset or read EEPROM if the signal is given
+	// reset
 	if (rxByte == CMD_RESET) {
 		EEPROM.write(EEPROM_ADDR, 0);
 		EEPROM.commit();
 		Serial.println("reset");
+	
+	// read EEPROM
 	} else if (rxByte == CMD_READ) {
 		char b = EEPROM.read(EEPROM_ADDR);
 		for (int i = 0; i < N_FF; i++) {
@@ -108,12 +120,23 @@ void serialEvent() {
 			b = b >> 1;
 		}
 		Serial.println();
+	
+	// toggle ring oscillator
+	} else if (rxByte == CMD_TOGGLE_OSC) {
+		oscEnabled ^= 1;
+		if (oscEnabled) {
+			digitalWrite(OSC_EN, HIGH);
+			Serial.println("oscillator enabled");
+		} else {
+			digitalWrite(OSC_EN, LOW);
+			Serial.println("oscillator disabled");
+		}
 	}
 }
 
 
 /*
- * Main loop: Does nothing unless there is a flag
+ * Main loop: constantly writes to EEPROM
  * 
  * [loops indefinitely]
  */
