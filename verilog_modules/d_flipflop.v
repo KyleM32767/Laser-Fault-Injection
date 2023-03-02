@@ -11,19 +11,22 @@
 
 module d_flipflop #(
 	parameter N            = 8,     // number of flip flops
-	parameter DB_COUNT_MAX = 20000, // clock cycles @ 100MHz
+	parameter DB_COUNT_MAX = 2000, // clock cycles @ 100MHz
 	parameter DB_COUNT_N   = 15     // bits for debouncer counter
 ) (
 	input              sysclk_p, // clock signal
 	input              sysclk_n,
 	input              reset,    // synchronous active-high reset
 	input              en,       // active-high write enable
-	input      [N-1:0] d,        // input
-	output reg [N-1:0] q_db      // debounced output
+	input              d,
+	output reg [N-1:0] q_db,     // debounced output
+	output     [N-1:0] led       // debounced output
 	);
 
 	wire clk;
-
+	
+	assign led = q_db;
+	
 	// raw output
 	reg [N-1:0] q;
 
@@ -37,25 +40,22 @@ module d_flipflop #(
 		.clk_in1_n(sysclk_n),
 		.clk_out1(clk)
 	);
-
-	// register latched on positive clock
-	always @(posedge clk) begin 
-		if (en) begin
-			q <= reset ? 1'b0 : d;
-		end
-	end
 	
 	
 	// generate counters for each debouncer
 	genvar i;
 	generate
-		for (i = 0; i < N; i++) begin
+		for (i=0; i<N; i=i+1) begin
 			always @(posedge clk) begin
 				// count up if difference in outputs
 				db_count[i] <= (q_db == q) ? 1'b0 : db_count[i] + 1'b1;
 
 				// change debounced output if the db_count exceeds the max
 				q_db[i] <= (db_count[i] < DB_COUNT_MAX) ? q_db[i] : q[i];
+				
+				if (en) begin
+					q[i] <= reset ? 1'b0 : d;
+				end
 			end
 		end
 	endgenerate
