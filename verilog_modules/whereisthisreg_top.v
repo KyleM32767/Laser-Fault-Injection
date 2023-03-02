@@ -15,6 +15,7 @@ module whereisthisreg_top #(
 )(
 	input                   sysclk_n, // system differential clock
 	input                   sysclk_p, 
+	input      [N_REGS-1:0] ja,       // active-high register enable
 	input                   jb1,      // active-high reset
 	input                   jb2,      // active-high ring oscillator enable
 	output                  jb3,      // ring oscillator output
@@ -43,7 +44,9 @@ module whereisthisreg_top #(
 		genvar i;
 		for (i = 0; i < N_REGS; i = i+1) begin
 			always @(posedge clk) begin
-				jc[i] <= jb3;
+				if (ja[i]) begin
+					jc[i] <= jb3;
+				end
 			end
 		end
 	endgenerate
