@@ -19,14 +19,14 @@
 #define ADDR 1
 
 // width of laser pulse, ps
-#define PULSE_WIDTH  200000 // ps
+#define PULSE_WIDTH  300000 // ps
 
 // current of laser pulse, %
 // (100% = 4A)
-#define PEAK_CURRENT 35
+#define PEAK_CURRENT 30
 
 // frequency of pulses, Hz
-#define PULSE_FREQ   100000 // Hz
+#define PULSE_FREQ   1000 // Hz
 
 // time to run the laser, ms
 #define RUN_TIME     3000
@@ -55,7 +55,7 @@ int laser_init() {
 		printf("error setting current\n");
 		return -1;
 	}
-	if (SetCurrent_PDMv5(p, ADDR, 25) != 0) {
+	if (SetCurrent_PDMv5(p, ADDR, PEAK_CURRENT) != 0) {
 		printf("error setting current\n");
 		return -1;
 	}
