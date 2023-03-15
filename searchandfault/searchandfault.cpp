@@ -74,7 +74,11 @@ int main() {
 		}
 
 		// wait a bit
+<<<<<<< HEAD
 		Sleep(700);
+=======
+		Sleep(300);
+>>>>>>> e33445fb1423b38837f1ac60bb379b103113ea9e
 	}
 
 	return 0;

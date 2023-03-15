@@ -1,7 +1,7 @@
 /*
- * whereisthisreg_top.v
+ * d_glipflop.v
  * 
- * an array of registers fed by a ring oscillator to determine where is this register?
+ * an array of registers to be attacked by laser
  * 
  * Author: Kyle Mitard
  * Created 14 Feb 2023
@@ -10,17 +10,28 @@
  */
 
 module d_flipflop #(
-	parameter N = 8
+	parameter N            = 8,     // number of flip flops
+	parameter DB_COUNT_MAX = 2000, // clock cycles @ 100MHz
+	parameter DB_COUNT_N   = 15     // bits for debouncer counter
 ) (
 	input              sysclk_p, // clock signal
 	input              sysclk_n,
 	input              reset,    // synchronous active-high reset
-	input              en,       // active-high enable
-	input      [N-1:0] d,        // input
-	output reg [N-1:0] q         // output
+	input              en,       // active-high write enable
+	input              d,
+	output reg [N-1:0] q_db,     // debounced output
+	output     [N-1:0] led       // debounced output
 	);
 
 	wire clk;
+	
+	assign led = q_db;
+	
+	// raw output
+	reg [N-1:0] q;
+
+	// debouncer counter
+	reg [DB_COUNT_N-1:0] db_count [N-1:0];
 
 	// clock wizard to generate 100 MHz clock signal
 	clk_wiz_0 mmcm0(
@@ -29,12 +40,24 @@ module d_flipflop #(
 		.clk_in1_n(sysclk_n),
 		.clk_out1(clk)
 	);
-
-	always @(posedge clk) begin 
-		if (en) begin
-			q <= reset ? 1'b0 : d;
-		end
-	end
 	
+	
+	// generate counters for each debouncer
+	genvar i;
+	generate
+		for (i=0; i<N; i=i+1) begin
+			always @(posedge clk) begin
+				// count up if difference in outputs
+				db_count[i] <= (q_db == q) ? 1'b0 : db_count[i] + 1'b1;
+
+				// change debounced output if the db_count exceeds the max
+				q_db[i] <= (db_count[i] < DB_COUNT_MAX) ? q_db[i] : q[i];
+				
+				if (en) begin
+					q[i] <= reset ? 1'b0 : d;
+				end
+			end
+		end
+	endgenerate
 
 endmodule

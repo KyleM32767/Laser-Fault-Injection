@@ -15,7 +15,8 @@ module whereisthisreg_top #(
 )(
 	input                   sysclk_n, // system differential clock
 	input                   sysclk_p, 
-	input                   jb1,      // active-high reset
+	input      [N_REGS-1:0] ja,       // active-high register enable
+	// input                   jb1,      // active-high reset
 	input                   jb2,      // active-high ring oscillator enable
 	output                  jb3,      // ring oscillator output
 	output reg [N_REGS-1:0] jc        // the registers to locate
@@ -29,21 +30,35 @@ module whereisthisreg_top #(
 		.osc_out(jb3)
 	);
 
-	// clock wizard to generate 100 MHz clock signal
-	clk_wiz_0 mmcm0(
-		.reset(jb1),
-		.clk_in1_p(sysclk_p),
-		.clk_in1_n(sysclk_n),
-		.clk_out1(clk)
+	wire clk;
+
+	// // clock wizard to generate 100 MHz clock signal
+	// clk_wiz_0 mmcm0(
+	// 	.reset(jb1),
+	// 	.clk_in1_p(sysclk_p),
+	// 	.clk_in1_n(sysclk_n),
+	// 	.clk_out1(clk)
+	// );
+
+
+	// Differential Clock Buffer to create 200 Mhz Clock
+	IBUFGDS #(
+		.DIFF_TERM   ("FALSE"),
+		.IBUF_LOW_PWR("TRUE" ),
+		.IOSTANDARD  ("LVDS" )
+	) get_clk (
+		.O(clk   ),
+		.I(sysclk_p ),
+		.IB(sysclk_n)
 	);
 
-	// generate n registers with ring oscillator as input
+	// generate n registers constantly toggling at every clock cycle when enabled
 	(* dont_touch = "true" *)
 	generate
 		genvar i;
 		for (i = 0; i < N_REGS; i = i+1) begin
 			always @(posedge clk) begin
-				jc[i] <= jb3;
+				jc[i] <= ja[i] ? ~jc[i] : 1'b0;
 			end
 		end
 	endgenerate
