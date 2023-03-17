@@ -19,6 +19,13 @@ from PIL import ImageGrab
 # CONSTANTS
 # ======================================================================================================
 
+# SSH hosts
+JUMP_HOST   = 'mitrelab@fe80::2c2a:76c8:5d84:838a'
+VIVADO_HOST = 'dev@130.215.23.103'
+
+# Bitstream file for reprogramming
+BITSTREAM = '/home/dev/kyle/bitstreams/just_a_dff_x1y348.bit'
+
 # file onto which the fault sensitivity map is drawn
 MAP_IMAGE_FILE = "result/map.png"
 
@@ -107,6 +114,10 @@ else:
 	n = cv2.addWeighted(overlay, OPACITY, map_img, 1-OPACITY, 0)
 	cv2.imwrite(MAP_IMAGE_FILE, n)
 
+	# do a double nested ssh to run vivado while keeping this computer offline
+	# full path to vivado is needed due to path issues over ssh
+	os.system('ssh ' + JUMP_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl -tclargs ' + BITSTREAM)
+	
 	# reset and verify that it was reset
 	tester.write(b'~')
 	result = tester.readline()
@@ -116,9 +127,6 @@ else:
 		print("reset failed...")
 		os.system("pause")
 
-	# do a double nested ssh to run vivado without connecting to the internet
-	# full path to vivado is needed due to path issues over ssh
-	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl -tclargs /home/dev/kyle/bitstreams/just_a_dff_x1y348.bit')
 
 
 # close serial port
