@@ -13,6 +13,7 @@
  */
 
 #include <EEPROM.h>
+#include <PinChangeInt.h>
 
 // serial port baud rate
 #define BAUD_RATE 9600
@@ -36,7 +37,7 @@
 #define OSC_EN 2
 
 // output pins from each flip flop (currently set up for an ESP32)
-const int FF_OUT[N_FF] = {13, 12, 14, 27, 26, 25, 33, 32};
+const int FF_OUT[N_FF] = {4, 5, 6, 7, 8, 9, 10, 11};
 
 // 1 if oscillator is enabled, 0 otherwise 
 bool oscEnabled = 0;
@@ -47,7 +48,7 @@ bool oscEnabled = 0;
  * Params:
  *  n = bit to set 1
  */
-void IRAM_ATTR flipBit(int n) {
+void flipBit(int n) {
 	EEPROM.write(EEPROM_ADDR, EEPROM.read(EEPROM_ADDR) | (1 << n));
 }
 
@@ -56,20 +57,20 @@ void IRAM_ATTR flipBit(int n) {
  * The respective ISRs to flip each bit in EEPROM
  * (it pains me that there is no better way to do this)
  */
-void IRAM_ATTR ISR_pin0() { flipBit(0); }
-void IRAM_ATTR ISR_pin1() { flipBit(1); }
-void IRAM_ATTR ISR_pin2() { flipBit(2); }
-void IRAM_ATTR ISR_pin3() { flipBit(3); }
-void IRAM_ATTR ISR_pin4() { flipBit(4); }
-void IRAM_ATTR ISR_pin5() { flipBit(5); }
-void IRAM_ATTR ISR_pin6() { flipBit(6); }
-void IRAM_ATTR ISR_pin7() { flipBit(7); }
+void ISR_pin0() { flipBit(0); }
+void ISR_pin1() { flipBit(1); }
+void ISR_pin2() { flipBit(2); }
+void ISR_pin3() { flipBit(3); }
+void ISR_pin4() { flipBit(4); }
+void ISR_pin5() { flipBit(5); }
+void ISR_pin6() { flipBit(6); }
+void ISR_pin7() { flipBit(7); }
 
 
 /*
  * Array of ISR pointers
  */
-void (*ISR[N_FF])() = {ISR_pin0, ISR_pin1, ISR_pin2, ISR_pin3, ISR_pin4, ISR_pin5, ISR_pin6, ISR_pin7};
+PCIntvoidFuncPtr ISR[N_FF] = {ISR_pin0, ISR_pin1, ISR_pin2, ISR_pin3, ISR_pin4, ISR_pin5, ISR_pin6, ISR_pin7};
 
 
 /*
@@ -89,10 +90,10 @@ void setup() {
 	// set each flip flop output as input with interrupt
 	for (int i = 0; i < N_FF; i++) {
 		pinMode(FF_OUT[i], INPUT);
-		attachInterrupt(FF_OUT[i], ISR[i], CHANGE);
+		attachPinChangeInterrupt(FF_OUT[i], *ISR[i], CHANGE);
 	}
 
-	EEPROM.begin(12);
+	EEPROM.begin();
 }
 
 
@@ -109,7 +110,7 @@ void serialEvent() {
 	// reset
 	if (rxByte == CMD_RESET) {
 		EEPROM.write(EEPROM_ADDR, 0);
-		EEPROM.commit();
+		//EEPROM.commit();
 		Serial.println("reset");
 	
 	// read EEPROM
@@ -141,5 +142,5 @@ void serialEvent() {
  * [loops indefinitely]
  */
 void loop() {
-	EEPROM.commit();
+	//EEPROM.commit();
 }

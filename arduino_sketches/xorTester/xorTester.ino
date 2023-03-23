@@ -25,13 +25,13 @@
 #define BAUD_RATE 115200
 
 // number of XOR gate inputs
-#define N_INPUTS 5
+#define N_INPUTS 6
 
 // GPIO pin for XOR gate output
-#define OUTPUT_PIN 15
+#define OUTPUT_PIN 10
 
 // GPIO pin for ring oscillator enable
-#define OSC_EN 2
+#define OSC_EN 13
 
 // RX bytes corresponding to various commands
 #define CMD_TEST_VERBOSE   'a'
@@ -40,7 +40,7 @@
 #define CMD_TOGGLE_OSC     'r'
 
 // input pins to XOR gate (currently set up for an ESP32)
-const int INPUT_PINS[N_INPUTS] = {13, 12, 14, 27, 26};
+const int INPUT_PINS[N_INPUTS] = {4, 5, 6, 7, 8, 9};
 
 // true if ring oscillator is enabled, false otherwise
 bool oscEnabled = true;
