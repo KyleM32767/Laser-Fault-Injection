@@ -26,10 +26,10 @@
 #define CMD_RESET '~'
 
 // GPIO pin for ring oscillator enable
-#define OSC_EN 2
+#define OSC_EN 13
 
 // output pins from each flip flop (currently set up for an ESP32)
-const int FF_OUT[N_FF] = {13, 12, 14, 27, 26, 25, 33, 32};
+const int FF_OUT[N_FF] = {4, 5, 6, 7, 8, 9, 10, 11};
 
 // bitfield for each enabled oscillator
 uint8_t ff_en = 0b00000000;

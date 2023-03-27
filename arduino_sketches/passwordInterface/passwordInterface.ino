@@ -14,15 +14,16 @@
 #define PW_WIDTH 7
 
 // GPIO pin for open output from FPGA
-#define OPEN 18
+#define OPEN 2
 
 // GPIO pin for enter input to FPGA
-#define ENTER 19
+#define ENTER 11
 
 // GPIO pin for reset input to FPGA
-#define RESET 5
+#define RESET 3
 
-#define OSC_EN 2
+// GPIO pin for oscillator enable
+#define OSC_EN 13
 
 // byte to send for reset
 #define CMD_RESET '~'
@@ -31,7 +32,7 @@
 #define CMD_TOGGLE_OSC 'r'
 
 // input pins to XOR gate (currently set up for an ESP32)
-const int PW_IN[PW_WIDTH] = {13, 12, 14, 27, 26, 25, 33};
+const int PW_IN[PW_WIDTH] = {4, 5, 6, 7, 8, 9, 10};
 
 // 1 if lock is closed, 0 otherwise
 bool closed = 1;
@@ -51,7 +52,7 @@ bool oscEnabled = 0;
  * 
  * [interrupt routine triggered whenever open pin changes]
  */
-void IRAM_ATTR ISR_open() {
+void ISR_open() {
 	if (digitalRead(OPEN) == LOW)
 		lockFlag = 1;
 	else
@@ -85,10 +86,9 @@ void setup() {
 
 	// set open indicator as input with an interrupt
 	pinMode(OPEN, INPUT);
-	attachInterrupt(OPEN, ISR_open, CHANGE); // for some bizzare reason, using falling edge will make it panic all the time
+	attachInterrupt(digitalPinToInterrupt(OPEN), ISR_open, CHANGE); // for some bizzare reason, using falling edge will make it panic all the time
 
 	Serial.println("enter password...");
-	// esp_int_wdt_delete();
 }
 
 
