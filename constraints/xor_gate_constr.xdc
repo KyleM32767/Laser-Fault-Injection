@@ -4,13 +4,13 @@
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## let ring oscillators happen
-set_property ALLOW_COMBINATORIAL_LOOPS TRUE [get_nets osc0/*]
+set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets osc0/*]
 
 ## place xor gate
-set_property BEL C6LUT [get_cells q_OBUF_inst_i_1]
-set_property LOC SLICE_X0Y0 [get_cells q_OBUF_inst_i_1]
+set_property BEL D6LUT [get_cells q_OBUF_inst_i_1]
+set_property LOC SLICE_X1Y348 [get_cells q_OBUF_inst_i_1]
 
-## place the ring oscillator above the XOR gate 
+## place the ring oscillator above the XOR gate
 set_property LOC SLICE_X0Y1 [get_cells osc0/b_inferred_i_1]
 set_property LOC SLICE_X1Y1 [get_cells osc0/b_inferred_i_2]
 set_property LOC SLICE_X2Y1 [get_cells osc0/b_inferred_i_3]
@@ -163,17 +163,17 @@ set_property LOC SLICE_X1Y0 [get_cells osc0/b_inferred_i_11]
 #set_property -dict { PACKAGE_PIN AG17  IOSTANDARD LVCMOS18 } [get_ports { oled_vdd }]; #IO_L12N_T1_MRCC_32 Sch=oled_vdd
 
 ## PMOD Header JA
-set_property -dict { PACKAGE_PIN U27   IOSTANDARD LVCMOS33 } [get_ports { a[0] }]; #IO_L13P_T2_MRCC_14 Sch=ja_p[1]
-set_property -dict { PACKAGE_PIN U28   IOSTANDARD LVCMOS33 } [get_ports { a[1] }]; #IO_L13N_T2_MRCC_14 Sch=ja_n[1]
-set_property -dict { PACKAGE_PIN T26   IOSTANDARD LVCMOS33 } [get_ports { a[2] }]; #IO_L12P_T1_MRCC_14 Sch=ja_p[2]
-set_property -dict { PACKAGE_PIN T27   IOSTANDARD LVCMOS33 } [get_ports { a[3] }]; #IO_L12N_T1_MRCC_14 Sch=ja_n[2]
-set_property -dict { PACKAGE_PIN T22   IOSTANDARD LVCMOS33 } [get_ports { a[4] }]; #IO_L5P_T0_D06_14 Sch=ja_p[3]
-set_property -dict { PACKAGE_PIN T23   IOSTANDARD LVCMOS33 } [get_ports { a[5] }]; #IO_L5N_T0_D07_14 Sch=ja_n[3]
-set_property -dict { PACKAGE_PIN T20   IOSTANDARD LVCMOS33 } [get_ports { q }]; #IO_L4P_T0_D04_14 Sch=ja_p[4]
-set_property -dict { PACKAGE_PIN T21   IOSTANDARD LVCMOS33 } [get_ports { ro_out }]; #IO_L4N_T0_D05_14 Sch=ja_n[4]
+set_property -dict {PACKAGE_PIN U27 IOSTANDARD LVCMOS33} [get_ports {a[0]}]
+set_property -dict {PACKAGE_PIN U28 IOSTANDARD LVCMOS33} [get_ports {a[1]}]
+set_property -dict {PACKAGE_PIN T26 IOSTANDARD LVCMOS33} [get_ports {a[2]}]
+set_property -dict {PACKAGE_PIN T27 IOSTANDARD LVCMOS33} [get_ports {a[3]}]
+set_property -dict {PACKAGE_PIN T22 IOSTANDARD LVCMOS33} [get_ports {a[4]}]
+set_property -dict {PACKAGE_PIN T23 IOSTANDARD LVCMOS33} [get_ports {a[5]}]
+set_property -dict {PACKAGE_PIN T20 IOSTANDARD LVCMOS33} [get_ports q]
+set_property -dict {PACKAGE_PIN T21 IOSTANDARD LVCMOS33} [get_ports ro_out]
 
 ## PMOD Header JB
-set_property -dict { PACKAGE_PIN V29   IOSTANDARD LVCMOS33 } [get_ports { ro_en }]; #IO_L17P_T2_A14_D30_14 Sch=jb_p[1]
+set_property -dict {PACKAGE_PIN V29 IOSTANDARD LVCMOS33} [get_ports ro_en]
 #set_property -dict { PACKAGE_PIN V30   IOSTANDARD LVCMOS33 } [get_ports { jb[1] }]; #IO_L17N_T2_A13_D29_14 Sch=jb_n[1]
 #set_property -dict { PACKAGE_PIN V25   IOSTANDARD LVCMOS33 } [get_ports { jb[2] }]; #IO_L18P_T2_A12_D28_14 Sch=jb_p[2]
 #set_property -dict { PACKAGE_PIN W26   IOSTANDARD LVCMOS33 } [get_ports { jb[3] }]; #IO_L18N_T2_A11_D27_14 Sch=jb_n[2]
@@ -454,3 +454,4 @@ set_property -dict { PACKAGE_PIN V29   IOSTANDARD LVCMOS33 } [get_ports { ro_en 
 #set_property -dict { PACKAGE_PIN AB14  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_RESETB }]; #IO_25_VRP_32 Sch=usb_otg_resetb
 #set_property -dict { PACKAGE_PIN AA17  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_STP }]; #IO_L23P_T3_32 Sch=usb_otg_stp
 #set_property -dict { PACKAGE_PIN AF16  IOSTANDARD LVCMOS18 } [get_ports { USB_OTG_VBUSOC }]; #IO_L6N_T0_VREF_32 Sch=usb_otg_vbusoc
+
