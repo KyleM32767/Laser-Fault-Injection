@@ -20,8 +20,11 @@ from PIL import ImageGrab
 # ======================================================================================================
 
 # SSH hosts
-PI_HOST     = 'pi@fe80::ae16:eb8a:4dee:14df'
+JUMP_HOST   = 'mitrelab@fe80::2c2a:76c8:5d84:838a'
 VIVADO_HOST = 'dev@130.215.23.103'
+
+# bitstream file for reprogramming
+BITSTREAM = '/home/dev/kyle/xor_gate_noRO/xor_gate_noRO.runs/impl_1/xor_gate_noRO_top.bit'
 
 # file onto which the fault sensitivity map is drawn
 MAP_IMAGE_FILE = "result/map.png"
@@ -101,7 +104,7 @@ else:
 
 	# do a double nested ssh to run vivado without connecting to the internet
 	# full path to vivado is needed due to path issues over ssh
-	os.system('ssh ' + PI_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl -tclargs /home/dev/kyle/xor_gate_noRO/xor_gate_noRO.runs/impl_1/xor_gate_noRO_top.bit')
+	os.system('ssh ' + JUMP_HOST + ' ssh ' + VIVADO_HOST + ' /tools/Xilinx/Vivado/2022.2/bin/vivado -mode batch -source /home/dev/kyle/Laser-Fault-Injection/tcl_scripts/autoprogram.tcl -tclargs ' + BITSTREAM)
 	print('done. verifying...')
 
 	# take a screenshot of lucie

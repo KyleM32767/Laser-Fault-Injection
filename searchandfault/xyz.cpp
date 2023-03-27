@@ -16,7 +16,7 @@ using namespace std;
 // base command for the python script
 // uncomment the relevant one
 // #define PYTHON_CMD_BASE "python python_scripts/testandprogram.py COM15 "
-#define PYTHON_CMD_BASE "python python_scripts/getFlippedRegs.py COM15 "
+#define PYTHON_CMD_BASE "python python_scripts/getFlippedRegs.py COM17 "
 
 // serial port for XYZ stage
 #define XYZ_PORT (DWORD) 9
