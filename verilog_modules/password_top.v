@@ -16,10 +16,8 @@ module password_top (
 	input        sysclk_p,
 	input        reset,    // PMOD header B1: active high reset
 	input  [6:0] pw,       // PMOD header A0-6: password input
-	input        enter,    // PMOD header B0: enter
-	input        roEn,     // PMOD header B2: ring oscillator enable
-	output       open,     // PMOD header A7: open indicator
-	output       roOut     // PMOD header B3: ring oscillator output
+	input        enter,    // PMOD header A7: enter
+	output       open      // PMOD header B0: open indicator
 	);
 
 	// generated clock signal
@@ -44,14 +42,6 @@ module password_top (
 		.char_in(pw),
 		.enter(enter),
 		.open(open)
-	);
-
-	// ring oscillator
-	ring_oscillator #(
-		.N_STAGES(7)
-	) osc0 (
-		.en(roEn),
-		.osc_out(roOut)
 	);
 
 endmodule

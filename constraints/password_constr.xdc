@@ -3,9 +3,6 @@
 #### - uncomment the lines corresponding to used pins
 #### - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
-## let ring oscillator happen
-set_property ALLOW_COMBINATORIAL_LOOPS true [get_nets osc0/*]
-
 ## Clock Signal
 set_property -dict {PACKAGE_PIN AD11 IOSTANDARD LVDS} [get_ports sysclk_n]
 set_property -dict {PACKAGE_PIN AD12 IOSTANDARD LVDS} [get_ports sysclk_p]
@@ -158,8 +155,8 @@ set_property -dict {PACKAGE_PIN T21 IOSTANDARD LVCMOS33} [get_ports enter]
 ## PMOD Header JB
 set_property -dict {PACKAGE_PIN V29 IOSTANDARD LVCMOS33} [get_ports open]
 set_property -dict {PACKAGE_PIN V30 IOSTANDARD LVCMOS33} [get_ports reset]
-set_property -dict {PACKAGE_PIN V25 IOSTANDARD LVCMOS33} [get_ports roEn]
-set_property -dict {PACKAGE_PIN W26 IOSTANDARD LVCMOS33} [get_ports roOut]
+#set_property -dict {PACKAGE_PIN V25 IOSTANDARD LVCMOS33} [get_ports roEn]
+#set_property -dict {PACKAGE_PIN W26 IOSTANDARD LVCMOS33} [get_ports roOut]
 #set_property -dict { PACKAGE_PIN T25   IOSTANDARD LVCMOS33 } [get_ports { jb[4] }]; #IO_L14P_T2_SRCC_14 Sch=jb_p[3]
 #set_property -dict { PACKAGE_PIN U25   IOSTANDARD LVCMOS33 } [get_ports { jb[5] }]; #IO_L14N_T2_SRCC_14 Sch=jb_n[3]
 #set_property -dict { PACKAGE_PIN U22   IOSTANDARD LVCMOS33 } [get_ports { jb[6] }]; #IO_L21P_T3_DQS_14 Sch=jb_p[4]
@@ -456,18 +453,3 @@ set_property BEL D5FF [get_cells {pw0/FSM_sequential_fsmState_reg[0]}]
 set_property LOC SLICE_X1Y348 [get_cells {pw0/FSM_sequential_fsmState_reg[0]}]
 set_property BEL AFF [get_cells pw0/open_reg]
 set_property LOC SLICE_X1Y348 [get_cells pw0/open_reg]
-set_property BEL D6LUT [get_cells osc0/b_inferred_i_3]
-set_property LOC SLICE_X2Y349 [get_cells osc0/b_inferred_i_3]
-
-set_property BEL D6LUT [get_cells osc0/b_inferred_i_5]
-set_property LOC SLICE_X0Y349 [get_cells osc0/b_inferred_i_5]
-set_property BEL B6LUT [get_cells osc0/b_inferred_i_1]
-set_property LOC SLICE_X2Y349 [get_cells osc0/b_inferred_i_1]
-set_property BEL D6LUT [get_cells osc0/b_inferred_i_4]
-set_property LOC SLICE_X1Y349 [get_cells osc0/b_inferred_i_4]
-set_property BEL C6LUT [get_cells osc0/b_inferred_i_2]
-set_property LOC SLICE_X2Y349 [get_cells osc0/b_inferred_i_2]
-set_property BEL C6LUT [get_cells osc0/b_inferred_i_6]
-set_property LOC SLICE_X0Y349 [get_cells osc0/b_inferred_i_6]
-set_property BEL B6LUT [get_cells osc0/b_inferred_i_7]
-set_property LOC SLICE_X0Y349 [get_cells osc0/b_inferred_i_7]
